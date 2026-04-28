@@ -58,8 +58,8 @@ export default function Clients() {
       </div>
 
       {/* Revenue strip */}
-      <div className="mx-8 grid grid-cols-2 border-t border-b border-muted divide-x divide-muted mb-8">
-        <div className="px-6 py-5">
+      <div className="mx-8 grid grid-cols-2 gap-4 mb-8">
+        <div className="rounded-lg border border-muted bg-canvas shadow-card px-6 py-5">
           <p className="font-sans text-[11px] uppercase text-whisper mb-2" style={{ letterSpacing: '0.18em' }}>
             Total Collected
           </p>
@@ -70,7 +70,7 @@ export default function Clients() {
             <span className="text-ink">L</span>
           </p>
         </div>
-        <div className="px-6 py-5">
+        <div className="rounded-lg border border-muted bg-canvas shadow-card px-6 py-5">
           <p className="font-sans text-[11px] uppercase text-whisper mb-2" style={{ letterSpacing: '0.18em' }}>
             Balance Pending
           </p>
@@ -99,9 +99,9 @@ export default function Clients() {
             action={{ label: 'Clear search', onClick: () => setQuery(''), variant: 'ghost' }}
           />
         ) : (
-        <div className="border border-muted">
+        <div className="border border-muted rounded-lg overflow-hidden shadow-card">
           {/* Table header */}
-          <div className="grid px-5 py-2.5 bg-canvas-deeper border-b border-muted"
+          <div className="grid px-5 py-2.5 bg-canvas-deep border-b border-muted"
             style={{ gridTemplateColumns: '1fr 1.2fr 1fr 0.8fr 0.8fr 32px' }}>
             {['Client', 'Wedding', 'Package', 'Paid', 'Status', ''].map((h) => (
               <p key={h} className="font-sans text-[10px] uppercase text-whisper" style={{ letterSpacing: '0.18em' }}>
@@ -116,7 +116,7 @@ export default function Clients() {
               <div
                 key={event.id}
                 className={cn(
-                  'grid items-center px-5 py-4 cursor-pointer hover:bg-canvas-deeper transition-colors duration-400 group',
+                  'grid items-center px-5 py-4 cursor-pointer hover:bg-canvas-deep transition-colors duration-400 group',
                   i < filtered.length - 1 && 'border-b border-muted'
                 )}
                 style={{ gridTemplateColumns: '1fr 1.2fr 1fr 0.8fr 0.8fr 32px' }}

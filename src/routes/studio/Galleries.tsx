@@ -72,7 +72,7 @@ export default function Galleries() {
             {live.map(({ event, totalViews, totalFaves }) => (
               <div
                 key={event.id}
-                className="border border-muted bg-canvas-deep group"
+                className="rounded-lg overflow-hidden border border-muted bg-canvas shadow-card group"
               >
                 {/* Cover */}
                 <div className="relative overflow-hidden" style={{ aspectRatio: '16/9' }}>
@@ -89,7 +89,7 @@ export default function Galleries() {
                     target="_blank"
                     className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-400"
                   >
-                    <span className="flex items-center gap-2 bg-canvas/90 text-ink px-4 py-2 font-sans text-[11px] uppercase" style={{ letterSpacing: '0.18em' }}>
+                    <span className="flex items-center gap-2 bg-white/95 border border-muted text-ink px-4 py-2 font-sans text-[11px] uppercase shadow-card" style={{ letterSpacing: '0.18em' }}>
                       <ExternalLink size={11} strokeWidth={1.5} />
                       Open Gallery
                     </span>
@@ -97,11 +97,11 @@ export default function Galleries() {
 
                   {/* Stat badges — bottom of cover */}
                   <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                    <span className="flex items-center gap-1 bg-night/60 text-canvas/80 px-2 py-0.5 font-sans text-[10px]" style={{ backdropFilter: 'blur(4px)' }}>
+                    <span className="flex items-center gap-1 bg-black/50 text-white/90 px-2 py-0.5 font-sans text-[10px]" style={{ backdropFilter: 'blur(4px)' }}>
                       <Eye size={9} strokeWidth={1.5} />
                       {totalViews.toLocaleString('en-IN')}
                     </span>
-                    <span className="flex items-center gap-1 bg-night/60 text-canvas/80 px-2 py-0.5 font-sans text-[10px]" style={{ backdropFilter: 'blur(4px)' }}>
+                    <span className="flex items-center gap-1 bg-black/50 text-white/90 px-2 py-0.5 font-sans text-[10px]" style={{ backdropFilter: 'blur(4px)' }}>
                       <Heart size={9} strokeWidth={1.5} />
                       {totalFaves}
                     </span>
@@ -170,7 +170,7 @@ export default function Galleries() {
           </p>
           <div className="border border-muted divide-y divide-muted">
             {draft.map(({ event }) => (
-              <div key={event.id} className="flex items-center gap-5 px-5 py-4 hover:bg-canvas-deeper transition-colors duration-400">
+              <div key={event.id} className="flex items-center gap-5 px-5 py-4 hover:bg-canvas-deep transition-colors duration-400">
                 <div className="w-14 h-10 overflow-hidden shrink-0">
                   <img src={event.coverImage} alt="" className="w-full h-full object-cover" />
                 </div>

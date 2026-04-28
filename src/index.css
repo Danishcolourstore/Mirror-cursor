@@ -27,20 +27,6 @@
     min-height: 100vh;
   }
 
-  /* Paper grain noise overlay */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    pointer-events: none;
-    opacity: 0.42;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 200px 200px;
-  }
-
   h1, h2, h3, h4, h5, h6 {
     @apply font-serif;
     letter-spacing: -0.02em;
@@ -65,8 +51,8 @@
   }
 
   ::selection {
-    background-color: #8B6F4730;
-    color: #1C1814;
+    background-color: rgba(232, 201, 122, 0.35);
+    color: #1A1A1A;
   }
 }
 
@@ -77,9 +63,9 @@
     letter-spacing: -0.02em;
   }
 
-  /* Button styles */
+  /* Button styles — primary black / secondary outline */
   .btn-ink {
-    @apply bg-ink text-canvas font-sans text-xs uppercase tracking-button px-[18px] py-[10px] transition-colors duration-400;
+    @apply bg-night text-white font-sans text-xs uppercase tracking-button px-[18px] py-[10px] transition-colors duration-400;
     letter-spacing: 0.18em;
   }
 
@@ -88,12 +74,12 @@
   }
 
   .btn-ghost {
-    @apply border border-muted text-ink font-sans text-xs uppercase tracking-button px-[18px] py-[10px] bg-transparent transition-colors duration-400;
+    @apply border border-ink bg-canvas text-ink font-sans text-xs uppercase tracking-button px-[18px] py-[10px] transition-colors duration-400;
     letter-spacing: 0.18em;
   }
 
   .btn-ghost:hover {
-    @apply border-bronze text-bronze;
+    @apply bg-canvas-deep border-ink-soft;
   }
 
   /* Divider — 1px muted */
@@ -125,35 +111,39 @@
   }
 
   .pill-booked {
-    @apply pill bg-canvas-deeper text-whisper;
+    @apply pill border border-muted bg-canvas-deep text-whisper;
   }
 
   .pill-shooting {
-    @apply pill bg-bronze/10 text-bronze;
+    @apply pill border border-muted bg-canvas text-ink-soft;
   }
 
   .pill-editing {
-    @apply pill bg-sage/10 text-sage;
+    @apply pill border border-muted bg-canvas-deep text-whisper;
   }
 
   .pill-delivered {
-    @apply pill bg-ink text-canvas-deep;
+    @apply pill bg-night text-white;
   }
 
   .pill-live {
-    @apply pill bg-sage/15 text-sage;
+    @apply pill border border-muted bg-canvas text-ink-soft;
   }
 
   .pill-draft {
-    @apply pill bg-canvas-deeper text-whisper;
+    @apply pill border border-muted bg-canvas-deep text-whisper;
   }
 
   .pill-locked {
-    @apply pill bg-muted/40 text-whisper;
+    @apply pill border border-muted bg-canvas-deep text-whisper;
   }
 
   .pill-new {
-    @apply pill bg-bronze text-canvas;
+    @apply pill border border-bronze/50 bg-canvas text-ink font-medium;
+  }
+
+  .pill-overdue {
+    @apply pill border border-rose/30 bg-canvas text-rose font-medium;
   }
 
   /* Nav section label */
@@ -184,7 +174,7 @@
   }
 }
 
-/* Soft ivory pulse for image placeholders (no shimmer) */
+/* Placeholder pulse for image loading (no shimmer) */
 @keyframes ivoryPulse {
   0% {
     opacity: 0.62;

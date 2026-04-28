@@ -32,7 +32,7 @@ export default function ChapterCover({ chapter }: ChapterCoverProps) {
         className="absolute inset-0 z-10"
         style={{
           background:
-            'linear-gradient(180deg, rgba(20,17,13,0.15) 0%, rgba(20,17,13,0.25) 50%, rgba(20,17,13,0.82) 100%)',
+            'linear-gradient(180deg, rgba(0,0,0,0.12) 0%, rgba(0,0,0,0.22) 50%, rgba(0,0,0,0.78) 100%)',
         }}
       />
 

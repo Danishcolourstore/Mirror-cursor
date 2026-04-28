@@ -17,14 +17,14 @@ import {
   MOCK_LOVED_PHOTO_URLS,
 } from '../../data/mockInsights'
 
-const INK = '#1C1814'
-const BRONZE = '#8B6F47'
-const MUTED = '#D9D0BE'
-const WHISPER = '#7A736A'
+const INK = '#1A1A1A'
+const BRONZE = '#E8C97A'
+const MUTED = '#E8E8E8'
+const WHISPER = '#6B6B6B'
 
 const tooltipStyle = {
-  background: '#F6F1E8',
-  border: '1px solid #D9D0BE',
+  background: '#FFFFFF',
+  border: '1px solid #E8E8E8',
   borderRadius: 0,
   fontSize: '11px',
   fontFamily: 'DM Sans, system-ui, sans-serif',
@@ -51,8 +51,8 @@ export default function Insights() {
       </div>
 
       {/* 4-card stat strip */}
-      <div className="mx-8 grid grid-cols-2 lg:grid-cols-4 border-t border-b border-muted divide-x divide-y lg:divide-y-0 divide-muted mb-10">
-        <div className="px-5 sm:px-6 py-5">
+      <div className="mx-8 grid grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div className="rounded-lg bg-canvas border border-muted shadow-card px-5 sm:px-6 py-5">
           <p className="font-sans text-[10px] uppercase text-whisper mb-2" style={{ letterSpacing: '0.18em' }}>
             Total galleries
           </p>
@@ -60,7 +60,7 @@ export default function Insights() {
             {INSIGHTS_STATS.totalGalleries}
           </p>
         </div>
-        <div className="px-5 sm:px-6 py-5">
+        <div className="rounded-lg bg-canvas border border-muted shadow-card px-5 sm:px-6 py-5">
           <p className="font-sans text-[10px] uppercase text-whisper mb-2" style={{ letterSpacing: '0.18em' }}>
             Total opens this month
           </p>
@@ -68,7 +68,7 @@ export default function Insights() {
             {INSIGHTS_STATS.opensThisMonth.toLocaleString('en-IN')}
           </p>
         </div>
-        <div className="px-5 sm:px-6 py-5">
+        <div className="rounded-lg bg-canvas border border-muted shadow-card px-5 sm:px-6 py-5">
           <p className="font-sans text-[10px] uppercase text-whisper mb-2" style={{ letterSpacing: '0.18em' }}>
             Most-loved photo type
           </p>
@@ -76,7 +76,7 @@ export default function Insights() {
             {INSIGHTS_STATS.mostLovedPhotoType}
           </p>
         </div>
-        <div className="px-5 sm:px-6 py-5">
+        <div className="rounded-lg bg-canvas border border-muted shadow-card px-5 sm:px-6 py-5">
           <p className="font-sans text-[10px] uppercase text-whisper mb-2" style={{ letterSpacing: '0.18em' }}>
             Avg engagement / gallery
           </p>
@@ -88,7 +88,7 @@ export default function Insights() {
 
       <div className="px-8 space-y-10 pb-14">
         {/* Engagement over time — line */}
-        <div className="border border-muted bg-canvas-deep p-6 sm:p-8">
+        <div className="rounded-lg border border-muted bg-canvas shadow-card p-6 sm:p-8">
           <h2 className="section-title text-base mb-6">
             Engagement <em>over time</em>
           </h2>
@@ -127,7 +127,7 @@ export default function Insights() {
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
           {/* Top 5 weddings */}
-          <div className="border border-muted bg-canvas-deep p-6 sm:p-8">
+          <div className="rounded-lg border border-muted bg-canvas shadow-card p-6 sm:p-8">
             <h2 className="section-title text-base mb-6">
               Top <em>weddings</em> <span className="font-sans text-[10px] text-whisper uppercase not-italic" style={{ letterSpacing: '0.2em' }}>by engagement</span>
             </h2>
@@ -149,7 +149,7 @@ export default function Insights() {
           </div>
 
           {/* Family breakdown — bar */}
-          <div className="border border-muted bg-canvas-deep p-6 sm:p-8">
+          <div className="rounded-lg border border-muted bg-canvas shadow-card p-6 sm:p-8">
             <h2 className="section-title text-base mb-6">
               Family <em>engagement</em>
             </h2>
@@ -169,7 +169,7 @@ export default function Insights() {
                     axisLine={{ stroke: MUTED }}
                   />
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Bar dataKey="value" fill={BRONZE} radius={0} barSize={14} />
+                  <Bar dataKey="value" fill={INK} radius={2} barSize={14} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

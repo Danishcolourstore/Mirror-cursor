@@ -7,7 +7,7 @@ type ProgressiveImageProps = {
   alt: string
   className?: string
   style?: React.CSSProperties
-  /** Show a warm ivory pulse until the image loads */
+  /** Show a light pulse until the image loads */
   shimmer?: boolean
 }
 
@@ -28,7 +28,7 @@ export default function ProgressiveImage({
         <span
           className="absolute inset-0 z-10"
           style={{
-            background: 'linear-gradient(180deg, #F6F1E8 0%, #EDE6D8 100%)',
+            background: 'linear-gradient(180deg, #FFFFFF 0%, #F8F8F8 100%)',
             animation: 'ivoryPulse 1.6s ease-in-out infinite',
           }}
         />

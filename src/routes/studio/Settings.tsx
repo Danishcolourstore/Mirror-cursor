@@ -226,7 +226,7 @@ export default function Settings() {
               <p className="font-sans text-[10px] uppercase text-whisper mb-4" style={{ letterSpacing: '0.18em' }}>
                 Brand mark preview
               </p>
-              <div className="bg-canvas-deep border border-muted px-6 py-5 inline-block">
+              <div className="bg-canvas border border-muted shadow-card rounded-lg px-6 py-5 inline-block">
                 <span className="serif font-normal text-[17px] tracking-tight text-ink">
                   {draft.studioName.split(' ')[0]}
                   <em className="text-bronze font-normal" style={{ fontStyle: 'italic' }}>·</em>
@@ -238,7 +238,7 @@ export default function Settings() {
         )}
 
         {activeTab === 'gallery' && (
-          <div className="border border-muted divide-y divide-muted">
+          <div className="rounded-lg overflow-hidden shadow-card border border-muted divide-y divide-muted">
             <Toggle
               label="Watermark photos"
               hint="Adds a subtle studio watermark to all gallery images."
@@ -261,7 +261,7 @@ export default function Settings() {
         )}
 
         {activeTab === 'notifications' && (
-          <div className="border border-muted divide-y divide-muted">
+          <div className="rounded-lg overflow-hidden shadow-card border border-muted divide-y divide-muted">
             <Toggle
               label="Chapter unlock notifications"
               hint="Notify you when a scheduled chapter goes live."
@@ -291,14 +291,14 @@ export default function Settings() {
 
         {activeTab === 'billing' && (
           <div className="space-y-5">
-            <div className="border border-muted bg-canvas-deep p-5">
+            <div className="rounded-lg border border-muted bg-canvas shadow-card p-5">
               <p className="font-sans text-[10px] uppercase text-whisper mb-1" style={{ letterSpacing: '0.18em' }}>
                 Current plan
               </p>
               <p className="serif font-normal text-ink text-lg mt-2">Mirror Studio — <em className="text-bronze" style={{ fontStyle: 'italic' }}>Pro</em></p>
               <p className="font-sans text-[12px] text-whisper mt-1">₹4,999 / month · Renews 1 June 2025</p>
             </div>
-            <div className="border border-muted bg-canvas-deep p-5">
+            <div className="rounded-lg border border-muted bg-canvas shadow-card p-5">
               <p className="font-sans text-[10px] uppercase text-whisper mb-3" style={{ letterSpacing: '0.18em' }}>
                 Usage
               </p>

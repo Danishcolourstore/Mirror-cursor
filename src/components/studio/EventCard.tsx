@@ -49,7 +49,7 @@ export default function EventCard({ event }: EventCardProps) {
   return (
     <>
       <div
-        className="border border-muted bg-canvas-deep group cursor-pointer transition-shadow duration-400 hover:shadow-[0_2px_16px_rgba(28,24,20,0.08)] relative"
+        className="rounded-lg border border-muted bg-canvas shadow-card group cursor-pointer overflow-hidden transition-shadow duration-400 hover:shadow-[0_4px_16px_rgba(0,0,0,0.1)] relative"
         onClick={() => navigate(`/studio/events/${event.id}`)}
         onMouseEnter={() => setActionsVisible(true)}
         onMouseLeave={() => setActionsVisible(false)}
@@ -62,7 +62,7 @@ export default function EventCard({ event }: EventCardProps) {
             className="w-full h-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.2,0.6,0.2,1)] group-hover:scale-[1.04]"
             loading="lazy"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-night/50 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
           {/* Status pill — top left */}
           <span className={cn('absolute top-3 left-3', statusPill[event.status])}>
@@ -74,14 +74,14 @@ export default function EventCard({ event }: EventCardProps) {
             <Link
               to={`/g/${event.slug}`}
               onClick={(e) => e.stopPropagation()}
-              className="absolute top-3 right-3 flex items-center gap-1.5 bg-canvas/90 hover:bg-canvas text-ink px-2.5 py-1 transition-colors duration-400"
+              className="absolute top-3 right-3 flex items-center gap-1.5 bg-white/95 hover:bg-white text-ink px-2.5 py-1 transition-colors duration-400 border border-muted/80"
               style={{ fontSize: '10px', letterSpacing: '0.18em' }}
             >
               <ExternalLink size={9} strokeWidth={1.8} />
               <span className="uppercase font-sans">Gallery</span>
             </Link>
           ) : liveChapters > 0 ? (
-            <span className="absolute top-3 right-3 pill bg-canvas/90 text-ink">
+            <span className="absolute top-3 right-3 pill border border-muted/80 bg-white/95 text-ink">
               {liveChapters} live
             </span>
           ) : null}
@@ -107,7 +107,7 @@ export default function EventCard({ event }: EventCardProps) {
                 </button>
 
                 {/* Divider */}
-                <span className="w-px h-6 bg-canvas/20 shrink-0" />
+                <span className="w-px h-6 bg-white/25 shrink-0" />
 
                 {/* Copy link */}
                 <button
@@ -120,7 +120,7 @@ export default function EventCard({ event }: EventCardProps) {
                 </button>
 
                 {/* Divider */}
-                <span className="w-px h-6 bg-canvas/20 shrink-0" />
+                <span className="w-px h-6 bg-white/25 shrink-0" />
 
                 {/* Open workspace */}
                 <button

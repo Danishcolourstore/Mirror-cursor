@@ -199,7 +199,7 @@ export default function CommandPalette({ open, onClose }: CommandPaletteProps) {
             <div
               className="border border-muted overflow-hidden flex flex-col bg-canvas"
               style={{
-                boxShadow: '0 20px 64px rgba(20,17,13,0.12)',
+                boxShadow: '0 20px 48px rgba(0,0,0,0.1)',
               }}
             >
               <div className="flex items-center gap-3 px-4 py-3 border-b border-muted shrink-0">

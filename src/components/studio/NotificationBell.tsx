@@ -89,7 +89,7 @@ export default function NotificationBell() {
           ref={btnRef}
           type="button"
           onClick={toggle}
-          className="relative flex items-center justify-center w-10 h-10 border border-muted bg-canvas hover:border-bronze/40 transition-colors duration-400"
+          className="relative flex items-center justify-center w-10 h-10 border border-muted bg-canvas hover:bg-canvas-deep transition-colors duration-400"
           aria-expanded={open}
           aria-haspopup="true"
           aria-controls={open ? 'notifications-panel' : undefined}
@@ -103,7 +103,7 @@ export default function NotificationBell() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.85 }}
                 transition={{ duration: 0.22 }}
-                className="absolute min-w-[1.125rem] h-[18px] px-[5px] -top-0.5 -right-0.5 flex items-center justify-center bg-bronze text-canvas font-sans text-[10px] font-medium rounded-[4px] leading-none"
+                className="absolute min-w-[1.125rem] h-[18px] px-[5px] -top-0.5 -right-0.5 flex items-center justify-center bg-bronze text-ink font-sans text-[10px] font-medium rounded-[4px] leading-none"
               >
                 {unreadCount}
               </motion.span>
@@ -127,7 +127,7 @@ export default function NotificationBell() {
               }}
               className="absolute top-full mt-2 right-0 w-[320px] max-h-[400px] border border-muted bg-canvas flex flex-col overflow-hidden"
               style={{
-                boxShadow: '0 14px 40px rgba(28,24,20,0.06)',
+                boxShadow: '0 14px 40px rgba(0,0,0,0.08)',
               }}
             >
               <div className="shrink-0 px-4 py-3.5 border-b border-muted bg-canvas">
