@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;1,9..144,300;1,9..144,400;1,9..144,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-canvas text-ink font-sans;
+    font-size: 15px;
+    line-height: 1.55;
+    position: relative;
+    min-height: 100vh;
+  }
+
+  /* Paper grain noise overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.42;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-family: inherit;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  ::selection {
+    background-color: #8B6F4730;
+    color: #1C1814;
+  }
+}
+
+@layer components {
+  /* Serif utility — apply Fraunces font */
+  .serif {
+    font-family: 'Fraunces', Georgia, serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Button styles */
+  .btn-ink {
+    @apply bg-ink text-canvas font-sans text-xs uppercase tracking-button px-[18px] py-[10px] transition-colors duration-400;
+    letter-spacing: 0.18em;
+  }
+
+  .btn-ink:hover {
+    @apply bg-ink-soft;
+  }
+
+  .btn-ghost {
+    @apply border border-muted text-ink font-sans text-xs uppercase tracking-button px-[18px] py-[10px] bg-transparent transition-colors duration-400;
+    letter-spacing: 0.18em;
+  }
+
+  .btn-ghost:hover {
+    @apply border-bronze text-bronze;
+  }
+
+  /* Divider — 1px muted */
+  .divider {
+    @apply border-t border-muted;
+  }
+
+  /* Section title with one italic bronze word */
+  .section-title {
+    @apply font-serif text-xl font-light text-ink;
+    letter-spacing: -0.02em;
+  }
+
+  .section-title em {
+    @apply text-bronze;
+    font-style: italic;
+  }
+
+  /* Caption style */
+  .caption {
+    @apply font-serif italic text-sm text-whisper;
+    line-height: 1.5;
+  }
+
+  /* Status pills */
+  .pill {
+    @apply inline-flex items-center font-sans text-[10px] uppercase tracking-widest px-2.5 py-0.5;
+    letter-spacing: 0.18em;
+  }
+
+  .pill-booked {
+    @apply pill bg-canvas-deeper text-whisper;
+  }
+
+  .pill-shooting {
+    @apply pill bg-bronze/10 text-bronze;
+  }
+
+  .pill-editing {
+    @apply pill bg-sage/10 text-sage;
+  }
+
+  .pill-delivered {
+    @apply pill bg-ink text-canvas-deep;
+  }
+
+  .pill-live {
+    @apply pill bg-sage/15 text-sage;
+  }
+
+  .pill-draft {
+    @apply pill bg-canvas-deeper text-whisper;
+  }
+
+  .pill-locked {
+    @apply pill bg-muted/40 text-whisper;
+  }
+
+  .pill-new {
+    @apply pill bg-bronze text-canvas;
+  }
+
+  /* Nav section label */
+  .nav-label {
+    @apply font-serif uppercase text-whisper;
+    font-size: 9px;
+    letter-spacing: 0.32em;
+  }
+}
+
+@layer utilities {
+  .tracking-button {
+    letter-spacing: 0.18em;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Scrollbar hidden */
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Soft ivory pulse for image placeholders (no shimmer) */
+@keyframes ivoryPulse {
+  0% {
+    opacity: 0.62;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.62;
+  }
+}
+
+/* Bronze breathing dots for loader replacement */
+@keyframes breatheDot {
+  0% {
+    opacity: 0.35;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.35;
+    transform: scale(0.88);
+  }
+}
+
+.loading-dot {
+  animation: breatheDot 1.6s ease-in-out infinite;
+}
