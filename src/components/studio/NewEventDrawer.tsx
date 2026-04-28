@@ -154,7 +154,7 @@ export default function NewEventDrawer({ open, onClose }: NewEventDrawerProps) {
           {/* Drawer */}
           <motion.div
             className="fixed right-0 top-0 bottom-0 z-50 w-full sm:w-[480px] flex flex-col"
-            style={{ background: '#FFFFFF', borderLeft: '1px solid #E8E8E8' }}
+            style={{ background: '#F6F1E8', borderLeft: '1px solid #D9D0BE' }}
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}

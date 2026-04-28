@@ -447,7 +447,7 @@ function PhotosTab({ event }: { event: Event }) {
                     className="fixed inset-0 z-10"
                     onClick={() => setMoveMenuOpen(false)}
                   />
-                  <div className="absolute top-full right-0 mt-2 z-20 min-w-[200px] bg-canvas border border-muted shadow-[0_12px_36px_rgba(0,0,0,0.12)]">
+                  <div className="absolute top-full right-0 mt-2 z-20 min-w-[200px] bg-canvas border border-muted shadow-[0_12px_36px_rgba(28,24,20,0.18)]">
                     {event.chapters.length === 0 ? (
                       <p className="px-4 py-3 font-sans text-[12px] text-whisper italic">No chapters yet</p>
                     ) : (

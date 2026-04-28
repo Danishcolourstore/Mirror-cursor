@@ -77,7 +77,7 @@ export default function GalleryView() {
   return (
     <div
       className="min-h-screen"
-      style={{ background: '#FFFFFF' }}
+      style={{ background: '#F6F1E8' }}
     >
       <GalleryMeta event={event} />
 

@@ -35,7 +35,7 @@ export default function ActivityFeed() {
   const displayed = feed.slice(0, 8)
 
   return (
-    <div className="border border-muted bg-canvas rounded-lg shadow-card h-full flex flex-col overflow-hidden">
+    <div className="border border-muted bg-canvas-deep h-full flex flex-col">
       <div className="px-5 py-4 border-b border-muted flex items-center justify-between">
         <h3 className="section-title text-base">
           From the <em>galleries</em>

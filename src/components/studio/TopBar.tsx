@@ -11,9 +11,9 @@ export default function TopBar({ title }: TopBarProps) {
   const openNewEvent = useStudioStore((s) => s.openNewEvent)
 
   return (
-    <div className="flex items-center justify-between px-8 py-4 border-b border-muted bg-canvas sticky top-0 z-10 shadow-none">
+    <div className="flex items-center justify-between px-8 py-4 border-b border-muted bg-canvas sticky top-0 z-10">
       {title && (
-        <h2 className="serif text-base font-normal text-ink">{title}</h2>
+        <h2 className="serif text-base font-normal text-ink-soft">{title}</h2>
       )}
       <div className="flex items-center gap-3 ml-auto">
         <button

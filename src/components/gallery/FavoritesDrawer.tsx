@@ -49,8 +49,8 @@ export default function FavoritesDrawer({ open, onClose, event, onPhotoClick }: 
           <motion.div
             className="fixed right-0 top-0 bottom-0 z-50 w-full sm:w-[420px] flex flex-col"
             style={{
-              background: '#FFFFFF',
-              borderLeft: '1px solid #E8E8E8',
+              background: '#F6F1E8',
+              borderLeft: '1px solid #D9D0BE',
               paddingBottom: 'env(safe-area-inset-bottom, 0px)',
             }}
             initial={{ x: '100%' }}
@@ -153,7 +153,7 @@ export default function FavoritesDrawer({ open, onClose, event, onPhotoClick }: 
                       {/* Caption */}
                       {photo.caption && (
                         <div className="absolute bottom-0 inset-x-0 px-2.5 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
-                          style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.65))' }}>
+                          style={{ background: 'linear-gradient(transparent, rgba(20,17,13,0.7))' }}>
                           <p className="serif italic text-canvas/70 text-[11px] leading-tight line-clamp-2">
                             {photo.caption}
                           </p>

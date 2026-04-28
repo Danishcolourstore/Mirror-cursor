@@ -85,7 +85,7 @@ export default function ClosingCredits({
           <button
             onClick={handleShare}
             className="btn-ink inline-flex items-center gap-2.5"
-            style={{ background: '#FFFFFF', color: '#1A1A1A' }}
+            style={{ background: '#F6F1E8', color: '#1C1814' }}
           >
             <Share2 size={12} strokeWidth={1.5} />
             <span>Share their wedding</span>

@@ -1,7 +1,7 @@
 type Stat = {
   label: string
   value: string
-  emphasis?: string   // the part rendered italic (accent gold) inside the value
+  emphasis?: string   // the part rendered italic-bronze inside the value
   suffix?: string
 }
 
@@ -11,25 +11,17 @@ type StatStripProps = {
 
 export default function StatStrip({ stats }: StatStripProps) {
   return (
-    <div
-      className="grid gap-4"
-      style={{ gridTemplateColumns: `repeat(${stats.length}, minmax(0, 1fr))` }}
+    <div className="grid border-t border-b border-muted divide-x divide-muted"
+      style={{ gridTemplateColumns: `repeat(${stats.length}, 1fr)` }}
     >
       {stats.map((stat) => (
-        <div
-          key={stat.label}
-          className="rounded-lg bg-canvas border border-muted shadow-card px-5 sm:px-6 py-5"
-        >
-          <p
-            className="font-sans text-[11px] uppercase text-whisper mb-3"
-            style={{ letterSpacing: '0.18em' }}
-          >
+        <div key={stat.label} className="px-6 py-6">
+          <p className="font-sans text-[11px] uppercase text-whisper mb-3"
+            style={{ letterSpacing: '0.18em' }}>
             {stat.label}
           </p>
-          <p
-            className="serif font-light text-ink leading-none"
-            style={{ fontSize: '36px', letterSpacing: '-0.02em' }}
-          >
+          <p className="serif font-light text-ink leading-none"
+            style={{ fontSize: '36px', letterSpacing: '-0.02em' }}>
             {stat.emphasis ? (
               <>
                 {stat.value.split(stat.emphasis)[0]}

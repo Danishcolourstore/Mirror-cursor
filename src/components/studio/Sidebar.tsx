@@ -66,7 +66,7 @@ export default function Sidebar() {
   return (
     <>
       {/* ── Desktop sidebar ───────────────────────────────────────────────── */}
-      <aside className="hidden md:flex flex-col w-60 shrink-0 bg-canvas border-r border-muted min-h-screen sticky top-0 h-screen">
+      <aside className="hidden md:flex flex-col w-60 shrink-0 bg-canvas-deep border-r border-muted min-h-screen sticky top-0 h-screen">
 
         {/* Brand mark */}
         <div className="px-6 py-6 border-b border-muted">
@@ -89,11 +89,10 @@ export default function Sidebar() {
                       to={item.to}
                       className={({ isActive }) =>
                         cn(
-                          'relative flex items-center gap-3 pl-4 pr-3 py-2 rounded-md font-sans transition-colors duration-400',
-                          'before:absolute before:left-0 before:top-[6px] before:bottom-[6px] before:w-[3px] before:rounded-r before:bg-bronze',
+                          'flex items-center gap-3 px-3 py-2 font-sans transition-colors duration-400',
                           isActive
-                            ? 'before:opacity-100 bg-canvas-deep text-ink'
-                            : 'before:opacity-0 text-ink hover:bg-canvas-deep/80 hover:text-ink'
+                            ? 'bg-ink text-canvas'
+                            : 'text-ink-soft hover:bg-bronze/8 hover:text-ink'
                         )
                       }
                     >
@@ -102,7 +101,7 @@ export default function Sidebar() {
                           <item.icon
                             size={15}
                             strokeWidth={isActive ? 1.8 : 1.5}
-                            className={cn('shrink-0', isActive ? 'text-bronze' : 'text-whisper')}
+                            className={cn('shrink-0', isActive ? 'text-bronze-soft' : 'text-whisper')}
                           />
                           <span className="font-sans text-[13px] font-normal leading-none">
                             {item.label}
@@ -120,15 +119,15 @@ export default function Sidebar() {
         {/* User footer + shortcuts hint */}
         <div className="border-t border-muted">
           <div className="px-4 py-4 flex items-center gap-3">
-            <div className="w-7 h-7 rounded-full bg-night flex items-center justify-center shrink-0">
-              <span className="serif text-white text-[11px] font-normal">{avatarInitials}</span>
+            <div className="w-7 h-7 rounded-full bg-ink flex items-center justify-center shrink-0">
+              <span className="serif text-canvas text-[11px] font-normal">{avatarInitials}</span>
             </div>
             <div className="flex-1 min-w-0">
               <p className="serif text-[13px] font-normal text-ink leading-tight truncate">{ownerName}</p>
               <p className="font-sans text-[11px] text-whisper leading-tight mt-0.5">{ownerRole}</p>
             </div>
             <kbd
-              className="font-sans text-[9px] text-whisper border border-muted px-1.5 py-0.5 cursor-default"
+              className="font-sans text-[9px] text-whisper/40 border border-muted px-1.5 py-0.5 cursor-default"
               title="Press ? for keyboard shortcuts"
             >
               ?
@@ -139,7 +138,7 @@ export default function Sidebar() {
 
       {/* ── Mobile bottom tab bar ─────────────────────────────────────────── */}
       <div
-        className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-canvas border-t border-muted"
+        className="md:hidden fixed bottom-0 inset-x-0 z-50 bg-canvas-deep border-t border-muted"
         style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         <nav className="flex items-stretch">
@@ -151,7 +150,7 @@ export default function Sidebar() {
               <NavLink
                 key={item.to}
                 to={item.to}
-                className="relative flex-1 flex flex-col items-center justify-center gap-1 py-2.5 min-w-0"
+                className="flex-1 flex flex-col items-center justify-center gap-1 py-2.5 min-w-0"
                 style={{ touchAction: 'manipulation' }}
               >
                 <item.icon
@@ -165,13 +164,14 @@ export default function Sidebar() {
                 <span
                   className={cn(
                     'font-sans text-[9px] uppercase leading-none transition-colors duration-400',
-                    isActive ? 'text-ink' : 'text-whisper'
+                    isActive ? 'text-ink' : 'text-whisper/70'
                   )}
                   style={{ letterSpacing: '0.12em' }}
                 >
                   {item.shortLabel ?? item.label}
                 </span>
 
+                {/* Active dot indicator */}
                 {isActive && (
                   <span className="absolute bottom-1.5 w-1 h-1 rounded-full bg-bronze" />
                 )}

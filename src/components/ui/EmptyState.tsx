@@ -31,7 +31,7 @@ export default function EmptyState({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.2, 0.6, 0.2, 1] as [number, number, number, number] }}
       className={
-        'flex flex-col items-center text-center rounded-lg border border-muted bg-canvas shadow-card ' +
+        'flex flex-col items-center text-center border border-muted bg-canvas-deep ' +
         (compact ? 'py-12 px-6' : 'py-20 px-6')
       }
     >

@@ -19,14 +19,14 @@ const statusClass: Record<DeliveryItem['status'], string> = {
   pending: 'pill-booked',
   'in-progress': 'pill-shooting',
   done: 'pill-delivered',
-  overdue: 'pill-overdue',
+  overdue: 'bg-rose/10 text-rose pill',
 }
 
 export default function DeliveryRow({ item, isLast }: DeliveryRowProps) {
   return (
     <div
       className={cn(
-        'group flex items-center gap-4 px-4 py-3.5 cursor-pointer transition-colors duration-400 hover:bg-canvas-deep',
+        'group flex items-center gap-4 px-4 py-3.5 cursor-pointer transition-colors duration-400 hover:bg-canvas-deeper',
         !isLast && 'border-b border-muted'
       )}
     >

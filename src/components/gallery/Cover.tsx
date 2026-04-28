@@ -31,7 +31,7 @@ export default function Cover({ event }: CoverProps) {
         <div
           className="absolute inset-0 z-0"
           style={{
-            background: 'linear-gradient(90deg, #1a1a1a 0%, #333333 50%, #1a1a1a 100%)',
+            background: 'linear-gradient(90deg, #1C1814 0%, #2A2318 50%, #1C1814 100%)',
             backgroundSize: '200% 100%',
             animation: 'shimmer 2.4s ease-in-out infinite',
           }}
@@ -61,7 +61,7 @@ export default function Cover({ event }: CoverProps) {
         className="absolute inset-0 z-10"
         style={{
           background:
-            'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.12) 40%, rgba(0,0,0,0.65) 100%)',
+            'linear-gradient(180deg, rgba(20,17,13,0.4) 0%, rgba(20,17,13,0.15) 40%, rgba(20,17,13,0.7) 100%)',
         }}
       />
 

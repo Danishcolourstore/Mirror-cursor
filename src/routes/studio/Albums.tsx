@@ -53,7 +53,7 @@ export default function Albums() {
             return (
               <article
                 key={album.id}
-                className="rounded-lg overflow-hidden border border-muted bg-canvas shadow-card group hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition-shadow duration-400"
+                className="border border-muted bg-canvas-deep group hover:shadow-[0_2px_14px_rgba(28,24,20,0.06)] transition-shadow duration-400"
               >
                 <div className="relative overflow-hidden bg-canvas aspect-[4/5] border-b border-muted">
                   <img

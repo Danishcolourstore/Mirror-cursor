@@ -49,7 +49,7 @@ export default function Overview() {
         </div>
 
         <div className="flex-1 px-8 flex items-center justify-center">
-          <div className="text-center border border-muted rounded-lg bg-canvas shadow-card px-8 py-16 w-full max-w-2xl">
+          <div className="text-center border border-muted bg-canvas-deep px-8 py-16 w-full max-w-2xl">
             <p className="serif italic text-[40px] text-ink leading-none">
               Begin <span className="text-bronze">→</span>
             </p>
@@ -137,8 +137,8 @@ export default function Overview() {
         </h2>
 
         {/* Table header */}
-        <div className="border border-muted rounded-lg overflow-hidden shadow-card">
-          <div className="flex items-center gap-4 px-4 py-2 border-b border-muted bg-canvas-deep">
+        <div className="border border-muted">
+          <div className="flex items-center gap-4 px-4 py-2 border-b border-muted bg-canvas-deeper">
             <div className="w-36 shrink-0">
               <p className="font-sans text-[10px] uppercase text-whisper" style={{ letterSpacing: '0.18em' }}>
                 Client

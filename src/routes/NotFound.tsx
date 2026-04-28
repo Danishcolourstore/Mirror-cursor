@@ -5,7 +5,7 @@ export default function NotFound() {
   return (
     <div
       className="min-h-screen flex items-center justify-center px-6"
-      style={{ background: '#FFFFFF' }}
+      style={{ background: '#F6F1E8' }}
     >
       <motion.div
         className="text-center max-w-sm"
