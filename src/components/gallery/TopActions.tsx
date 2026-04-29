@@ -78,11 +78,11 @@ export default function TopActions({ event }: TopActionsProps) {
                   exit={{ opacity: 0, y: 4, scale: 0.92 }}
                   transition={{ duration: 0.3, ease: [0.2, 0.6, 0.2, 1] }}
                   onClick={() => setFavDrawerOpen(true)}
-                  className="flex items-center gap-2 bg-ink/90 px-3 py-2 hover:bg-ink transition-colors duration-400 active:scale-95"
+                  className="flex items-center gap-2 bg-night/90 px-3 py-2 hover:bg-night transition-colors duration-400 active:scale-95"
                   style={{ backdropFilter: 'blur(10px)', touchAction: 'manipulation' }}
                 >
                   <Heart size={11} strokeWidth={1.5} className="text-bronze-soft fill-bronze-soft" />
-                  <span className="font-sans text-canvas/70 text-[11px]" style={{ letterSpacing: '0.14em' }}>
+                  <span className="font-sans text-inverse-fg/70 text-[11px]" style={{ letterSpacing: '0.14em' }}>
                     {favCount} saved
                   </span>
                 </motion.button>
@@ -93,7 +93,7 @@ export default function TopActions({ event }: TopActionsProps) {
               {/* Music toggle */}
               <button
                 onClick={handleMusic}
-                className="w-11 h-11 bg-ink/90 flex items-center justify-center text-canvas/60 hover:text-canvas transition-colors duration-400 active:scale-95"
+                className="w-11 h-11 bg-night/90 flex items-center justify-center text-inverse-fg/60 hover:text-inverse-fg transition-colors duration-400 active:scale-95"
                 style={{ backdropFilter: 'blur(10px)', touchAction: 'manipulation' }}
                 title={isMusicPlaying ? 'Mute music' : 'Play music'}
                 aria-label={isMusicPlaying ? 'Mute music' : 'Play music'}
@@ -107,7 +107,7 @@ export default function TopActions({ event }: TopActionsProps) {
               {/* Share */}
               <button
                 onClick={handleShare}
-                className="w-11 h-11 bg-ink/90 flex items-center justify-center text-canvas/60 hover:text-canvas transition-colors duration-400 active:scale-95"
+                className="w-11 h-11 bg-night/90 flex items-center justify-center text-inverse-fg/60 hover:text-inverse-fg transition-colors duration-400 active:scale-95"
                 style={{ backdropFilter: 'blur(10px)', touchAction: 'manipulation' }}
                 title="Share gallery"
                 aria-label="Share gallery"
@@ -118,7 +118,7 @@ export default function TopActions({ event }: TopActionsProps) {
               {/* Back to top */}
               <button
                 onClick={scrollToTop}
-                className="w-11 h-11 bg-ink/90 flex items-center justify-center text-canvas/60 hover:text-canvas transition-colors duration-400 active:scale-95"
+                className="w-11 h-11 bg-night/90 flex items-center justify-center text-inverse-fg/60 hover:text-inverse-fg transition-colors duration-400 active:scale-95"
                 style={{ backdropFilter: 'blur(10px)', touchAction: 'manipulation' }}
                 title="Back to top"
                 aria-label="Back to top"

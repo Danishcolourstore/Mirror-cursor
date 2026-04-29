@@ -87,8 +87,8 @@ export default function ShareGalleryModal({ event, onClose }: ShareGalleryModalP
             transition={{ duration: 0.35, ease: [0.2, 0.6, 0.2, 1] }}
           >
             <div
-              className="border border-muted overflow-hidden"
-              style={{ background: '#F6F1E8', boxShadow: '0 24px 80px rgba(20,17,13,0.16)' }}
+              className="border border-muted overflow-hidden bg-canvas shadow-card"
+              style={{ boxShadow: 'var(--shadow), 0 24px 48px rgba(0,0,0,0.1)' }}
             >
               {/* Header */}
               <div className="flex items-start justify-between px-6 pt-5 pb-4 border-b border-muted">
@@ -176,8 +176,8 @@ export default function ShareGalleryModal({ event, onClose }: ShareGalleryModalP
                         className={cn(
                           'px-4 py-2.5 font-sans text-[11px] uppercase flex items-center gap-2 transition-all duration-400 shrink-0',
                           copied
-                            ? 'bg-sage/10 text-sage'
-                            : 'bg-ink text-canvas hover:bg-ink-soft'
+                            ? 'bg-canvas-deep text-ink-soft border-l border-muted'
+                            : 'bg-fill text-on-fill hover:bg-fill-hover'
                         )}
                         style={{ letterSpacing: '0.16em' }}
                       >

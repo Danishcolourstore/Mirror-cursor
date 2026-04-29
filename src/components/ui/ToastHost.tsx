@@ -11,10 +11,10 @@ const toneIcon: Record<ToastTone, React.ComponentType<{ size?: number; strokeWid
 }
 
 const toneColor: Record<ToastTone, string> = {
-  default: 'text-canvas/80',
+  default: 'text-whisper',
   success: 'text-sage',
   error: 'text-rose',
-  bronze: 'text-bronze-soft',
+  bronze: 'text-bronze',
 }
 
 export default function ToastHost() {
@@ -40,27 +40,25 @@ export default function ToastHost() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -8, scale: 0.96 }}
               transition={{ duration: 0.35, ease: [0.2, 0.6, 0.2, 1] }}
-              className="pointer-events-auto flex items-start gap-3 min-w-[260px] max-w-[360px] px-4 py-3 bg-ink/95 border border-white/10"
-              style={{ backdropFilter: 'blur(12px)', boxShadow: '0 12px 36px rgba(20,17,13,0.32)' }}
+              className="pointer-events-auto shadow-card flex min-w-[260px] max-w-[360px] items-start gap-3 border border-muted bg-canvas px-4 py-3"
+              style={{ backdropFilter: 'blur(10px)', boxShadow: 'var(--shadow)' }}
             >
               <Icon
                 size={13}
                 strokeWidth={1.7}
-                className={cn('shrink-0 mt-0.5', toneColor[toast.tone])}
+                className={cn('mt-0.5 shrink-0', toneColor[toast.tone])}
               />
-              <div className="flex-1 min-w-0">
-                <p className="font-sans text-[12.5px] text-canvas leading-snug">
-                  {toast.message}
-                </p>
+              <div className="min-w-0 flex-1">
+                <p className="font-sans text-[12.5px] leading-snug text-ink">{toast.message}</p>
                 {toast.detail && (
-                  <p className="serif italic text-[11.5px] text-canvas/55 mt-0.5">
+                  <p className="mt-0.5 serif text-[11.5px] italic text-whisper">
                     {toast.detail}
                   </p>
                 )}
               </div>
               <button
                 onClick={() => dismiss(toast.id)}
-                className="shrink-0 p-0.5 text-canvas/30 hover:text-canvas/80 transition-colors duration-300"
+                className="shrink-0 p-0.5 text-whisper transition-colors duration-300 hover:text-ink"
                 aria-label="Dismiss"
               >
                 <X size={11} strokeWidth={1.5} />

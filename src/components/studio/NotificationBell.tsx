@@ -103,7 +103,7 @@ export default function NotificationBell() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.85 }}
                 transition={{ duration: 0.22 }}
-                className="absolute min-w-[1.125rem] h-[18px] px-[5px] -top-0.5 -right-0.5 flex items-center justify-center bg-bronze text-canvas font-sans text-[10px] font-medium rounded-[4px] leading-none"
+                className="absolute min-w-[1.125rem] h-[18px] px-[5px] -top-0.5 -right-0.5 flex items-center justify-center bg-bronze text-[color:var(--on-accent)] font-sans text-[10px] font-medium rounded-[4px] leading-none"
               >
                 {unreadCount}
               </motion.span>

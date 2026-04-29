@@ -7,19 +7,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        canvas: '#F6F1E8',
-        'canvas-deep': '#EDE6D8',
-        'canvas-deeper': '#E4DCC9',
-        ink: '#1C1814',
-        'ink-soft': '#3A332C',
-        whisper: '#8E8579',
-        muted: '#D9D0BE',
-        bronze: '#8B6F47',
-        'bronze-deep': '#6B5436',
-        'bronze-soft': '#B89876',
-        sage: '#7A8470',
-        rose: '#B85C4A',
-        night: '#14110D',
+        canvas: 'var(--canvas)',
+        'canvas-deep': 'var(--surface)',
+        'canvas-deeper': 'var(--surface-2)',
+        ink: 'var(--ink)',
+        'ink-soft': 'var(--ink-soft)',
+        whisper: 'var(--whisper)',
+        muted: 'var(--border)',
+        bronze: 'var(--accent)',
+        'bronze-deep': 'var(--accent-deep)',
+        'bronze-soft': 'var(--accent-soft)',
+        sage: 'var(--sage)',
+        rose: 'var(--rose)',
+        night: 'var(--night)',
+        fill: 'var(--fill)',
+        'on-fill': 'var(--on-fill)',
+        'fill-hover': 'var(--fill-hover)',
+        'inverse-fg': 'var(--inverse-fg)',
       },
       fontFamily: {
         serif: ['Fraunces', 'Georgia', 'serif'],
@@ -31,6 +35,9 @@ export default {
       letterSpacing: {
         'widest-2': '0.32em',
         'button': '0.18em',
+      },
+      boxShadow: {
+        card: 'var(--shadow)',
       },
       transitionTimingFunction: {
         'cinematic': 'cubic-bezier(0.2, 0.6, 0.2, 1)',

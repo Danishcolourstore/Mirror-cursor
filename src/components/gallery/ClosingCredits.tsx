@@ -52,7 +52,7 @@ export default function ClosingCredits({
 
         {/* Closing quote */}
         <p
-          className="serif italic font-light text-canvas/70"
+          className="serif italic font-light text-inverse-fg/70"
           style={{ fontSize: 'clamp(18px, 3vw, 24px)', lineHeight: 1.75, letterSpacing: '-0.01em' }}
         >
           "{quote}"
@@ -61,13 +61,13 @@ export default function ClosingCredits({
         {/* Studio credit */}
         <div className="mt-12">
           <p
-            className="font-sans text-canvas/25 uppercase mb-2"
+            className="font-sans text-inverse-fg/25 uppercase mb-2"
             style={{ fontSize: '10px', letterSpacing: '0.32em' }}
           >
             Photographed by
           </p>
           <p
-            className="serif font-light text-canvas/80"
+            className="serif font-light text-inverse-fg/80"
             style={{ fontSize: '22px', letterSpacing: '-0.01em' }}
           >
             {resolvedStudioName}
@@ -84,8 +84,7 @@ export default function ClosingCredits({
         >
           <button
             onClick={handleShare}
-            className="btn-ink inline-flex items-center gap-2.5"
-            style={{ background: '#F6F1E8', color: '#1C1814' }}
+            className="btn-ghost inline-flex items-center gap-2.5"
           >
             <Share2 size={12} strokeWidth={1.5} />
             <span>Share their wedding</span>
@@ -94,7 +93,7 @@ export default function ClosingCredits({
 
         {/* Couple names footer */}
         <p
-          className="serif italic text-canvas/20 mt-10"
+          className="serif italic text-inverse-fg/20 mt-10"
           style={{ fontSize: '13px' }}
         >
           {event.couple.brideName} &amp; {event.couple.groomName} · {event.venue.city}

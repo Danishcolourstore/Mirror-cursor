@@ -69,7 +69,7 @@ export default function Cover({ event }: CoverProps) {
       <div className="relative z-20 flex flex-col items-center text-center px-6 select-none">
         {/* Eyebrow */}
         <motion.p
-          className="serif italic text-canvas/70 mb-6"
+          className="serif italic text-inverse-fg/70 mb-6"
           style={{ fontSize: '14px', letterSpacing: '0.04em' }}
           {...fadeUp(0.4)}
         >
@@ -78,7 +78,7 @@ export default function Cover({ event }: CoverProps) {
 
         {/* Couple names */}
         <motion.h1
-          className="serif font-light text-canvas leading-none"
+          className="serif font-light text-inverse-fg leading-none"
           style={{
             fontSize: 'clamp(48px, 11vw, 96px)',
             letterSpacing: '-0.02em',
@@ -101,7 +101,7 @@ export default function Cover({ event }: CoverProps) {
 
         {/* Location · Date */}
         <motion.p
-          className="font-sans text-canvas/55 mt-5 uppercase"
+          className="font-sans text-inverse-fg/55 mt-5 uppercase"
           style={{ fontSize: '11px', letterSpacing: '0.32em' }}
           {...fadeUp(1.8)}
         >
@@ -130,7 +130,7 @@ export default function Cover({ event }: CoverProps) {
             className="flex flex-col items-center gap-1"
           >
             <p
-              className="font-sans text-canvas/50 uppercase"
+              className="font-sans text-inverse-fg/50 uppercase"
               style={{ fontSize: '10px', letterSpacing: '0.32em' }}
             >
               Begin
@@ -140,7 +140,7 @@ export default function Cover({ event }: CoverProps) {
               height="8"
               viewBox="0 0 12 8"
               fill="none"
-              className="text-canvas/40"
+              className="text-inverse-fg/40"
             >
               <path
                 d="M1 1L6 6L11 1"

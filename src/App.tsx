@@ -7,7 +7,6 @@ import NotFound from './routes/NotFound'
 import ShortcutsOverlay from './components/studio/ShortcutsOverlay'
 import ToastHost from './components/ui/ToastHost'
 import { PageLoadingSkeleton } from './components/ui/LoadingStates'
-
 // Gallery routes
 import GalleryView from './routes/gallery/GalleryView'
 import ChapterView from './routes/gallery/ChapterView'

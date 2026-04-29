@@ -69,7 +69,7 @@ export default function EventDetail() {
         {/* Back button */}
         <button
           onClick={() => navigate('/studio/events')}
-          className="absolute top-4 left-6 flex items-center gap-2 font-sans text-[11px] uppercase text-canvas/70 hover:text-canvas transition-colors duration-400"
+          className="absolute top-4 left-6 flex items-center gap-2 font-sans text-[11px] uppercase text-inverse-fg/75 hover:text-inverse-fg transition-colors duration-400"
           style={{ letterSpacing: '0.18em' }}
         >
           <ArrowLeft size={13} strokeWidth={1.5} />
@@ -80,13 +80,13 @@ export default function EventDetail() {
         <div className="absolute bottom-0 left-0 right-0 px-8 pb-6">
           <div className="flex items-end justify-between">
             <div>
-              <h1 className="serif font-light text-canvas leading-none"
+              <h1 className="serif font-light text-inverse-fg leading-none"
                 style={{ fontSize: 'clamp(24px, 4vw, 36px)', letterSpacing: '-0.02em' }}>
                 {event.couple.brideName}
                 <em className="text-bronze-soft italic font-light"> & </em>
                 {event.couple.groomName}
               </h1>
-              <p className="font-sans text-[11px] text-canvas/60 mt-1.5 uppercase"
+              <p className="font-sans text-[11px] text-inverse-fg/65 mt-1.5 uppercase"
                 style={{ letterSpacing: '0.22em' }}>
                 {event.venue.location} · {event.venue.city} · {formatDateShort(event.date.start)}
               </p>
@@ -102,7 +102,7 @@ export default function EventDetail() {
               </span>
               <button
                 onClick={() => setShareOpen(true)}
-                className="flex items-center gap-1.5 font-sans text-[11px] uppercase text-canvas/70 hover:text-canvas transition-colors duration-400 border border-canvas/30 hover:border-canvas/60 px-3 py-1.5"
+                className="flex items-center gap-1.5 font-sans text-[11px] uppercase text-inverse-fg/75 hover:text-inverse-fg transition-colors duration-400 border border-white/35 hover:border-white/55 px-3 py-1.5"
                 style={{ letterSpacing: '0.18em' }}
               >
                 <Share2 size={11} strokeWidth={1.5} />
@@ -111,7 +111,7 @@ export default function EventDetail() {
               <Link
                 to={`/g/${event.slug}`}
                 target="_blank"
-                className="flex items-center gap-1.5 font-sans text-[11px] uppercase text-canvas/70 hover:text-canvas transition-colors duration-400 border border-canvas/30 hover:border-canvas/60 px-3 py-1.5"
+                className="flex items-center gap-1.5 font-sans text-[11px] uppercase text-inverse-fg/75 hover:text-inverse-fg transition-colors duration-400 border border-white/35 hover:border-white/55 px-3 py-1.5"
                 style={{ letterSpacing: '0.18em' }}
               >
                 <ExternalLink size={11} strokeWidth={1.5} />
@@ -577,10 +577,10 @@ function PhotosTab({ event }: { event: Event }) {
                   'absolute top-2 left-2 w-5 h-5 border flex items-center justify-center transition-all duration-300',
                   isSelected ? 'bg-bronze border-bronze' : 'bg-night/30 border-canvas/40 opacity-0 group-hover:opacity-100'
                 )}>
-                  {isSelected && <Check size={10} strokeWidth={2.5} className="text-canvas" />}
+                  {isSelected && <Check size={10} strokeWidth={2.5} className="text-inverse-fg" />}
                 </div>
                 {photo.role === 'hero' && (
-                  <span className="absolute bottom-2 right-2 font-sans text-[9px] uppercase text-canvas/70 bg-night/50 px-1.5 py-0.5" style={{ letterSpacing: '0.1em' }}>
+                  <span className="absolute bottom-2 right-2 font-sans text-[9px] uppercase text-inverse-fg/80 bg-night/50 px-1.5 py-0.5" style={{ letterSpacing: '0.1em' }}>
                     Hero
                   </span>
                 )}
@@ -707,7 +707,7 @@ function ChaptersTab({ event }: { event: Event }) {
                               className={cn(
                                 'font-sans text-[10px] uppercase px-3 py-1.5 border transition-all duration-300',
                                 localStatus === s
-                                  ? 'bg-ink text-canvas border-ink'
+                                  ? 'bg-fill text-on-fill border-fill'
                                   : 'border-muted text-whisper hover:border-ink-soft hover:text-ink-soft'
                               )}
                               style={{ letterSpacing: '0.14em' }}
@@ -799,7 +799,7 @@ function NoteTab({ event }: { event: Event }) {
               className={cn(
                 'font-sans text-[10px] uppercase px-3 py-1.5 border transition-all duration-400',
                 noteEditing
-                  ? 'bg-ink text-canvas border-ink'
+                  ? 'bg-fill text-on-fill border-fill'
                   : 'border-muted text-whisper hover:border-ink-soft hover:text-ink-soft'
               )}
               style={{ letterSpacing: '0.16em' }}
@@ -861,7 +861,7 @@ function NoteTab({ event }: { event: Event }) {
               className={cn(
                 'font-sans text-[10px] uppercase px-3 py-1.5 border transition-all duration-400',
                 quotEditing
-                  ? 'bg-ink text-canvas border-ink'
+                  ? 'bg-fill text-on-fill border-fill'
                   : 'border-muted text-whisper hover:border-ink-soft hover:text-ink-soft'
               )}
               style={{ letterSpacing: '0.16em' }}
@@ -1240,7 +1240,7 @@ function ScheduleTab({ event }: { event: Event }) {
               </button>
               <button
                 onClick={saveSneakPeek}
-                className="bg-ink border border-ink px-4 py-2 font-sans text-[11px] uppercase text-canvas hover:bg-ink-soft transition-colors duration-400"
+                className="bg-fill border border-fill px-4 py-2 font-sans text-[11px] uppercase text-on-fill hover:bg-fill-hover transition-colors duration-400"
                 style={{ letterSpacing: '0.18em' }}
               >
                 Schedule
@@ -1272,7 +1272,7 @@ function ScheduleTab({ event }: { event: Event }) {
               {previewChapter.caption}
             </p>
             <button
-              className="mt-5 bg-ink border border-ink px-4 py-2 font-sans text-[11px] uppercase text-canvas hover:bg-ink-soft transition-colors duration-400"
+              className="mt-5 bg-fill border border-fill px-4 py-2 font-sans text-[11px] uppercase text-on-fill hover:bg-fill-hover transition-colors duration-400"
               style={{ letterSpacing: '0.18em' }}
             >
               View now →

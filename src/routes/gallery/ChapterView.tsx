@@ -27,15 +27,12 @@ export default function ChapterView() {
 
   if (!event || !chapter) {
     return (
-      <div
-        className="min-h-screen flex flex-col items-center justify-center gap-6"
-        style={{ background: '#14110D' }}
-      >
+      <div className="bg-canvas flex min-h-screen flex-col items-center justify-center gap-6">
         <p className="serif italic text-whisper">Chapter not found.</p>
         {event && (
           <Link
             to={`/g/${slug}`}
-            className="font-sans text-[11px] uppercase text-canvas/40 hover:text-canvas/70 transition-colors"
+            className="font-sans text-[11px] uppercase text-inverse-fg/40 hover:text-inverse-fg/70 transition-colors"
             style={{ letterSpacing: '0.2em' }}
           >
             Back to gallery

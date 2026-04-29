@@ -28,7 +28,7 @@ export default function ProgressiveImage({
         <span
           className="absolute inset-0 z-10"
           style={{
-            background: 'linear-gradient(180deg, #F6F1E8 0%, #EDE6D8 100%)',
+            background: 'linear-gradient(180deg, var(--canvas) 0%, var(--surface) 100%)',
             animation: 'ivoryPulse 1.6s ease-in-out infinite',
           }}
         />

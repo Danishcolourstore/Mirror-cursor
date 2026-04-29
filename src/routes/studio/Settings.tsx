@@ -4,6 +4,7 @@ import { useStudioStore, type StudioProfile } from '../../stores/studioStore'
 import { useSettingsStore } from '../../stores/settingsStore'
 import { useToastStore } from '../../stores/toastStore'
 import { cn } from '../../lib/cn'
+import ThemeToggle from '../../components/studio/ThemeToggle'
 
 type SettingsTab = 'profile' | 'gallery' | 'notifications' | 'billing'
 
@@ -65,13 +66,13 @@ function Toggle({ label, hint, value, onChange }: {
         onClick={() => onChange(!value)}
         className={cn(
           'relative shrink-0 w-10 h-5 transition-colors duration-400',
-          value ? 'bg-ink' : 'bg-muted'
+          value ? 'bg-fill' : 'bg-muted'
         )}
         aria-pressed={value}
       >
         <span
           className={cn(
-            'absolute top-0.5 w-4 h-4 bg-canvas transition-transform duration-400',
+            'absolute top-0.5 w-4 h-4 bg-white shadow-sm transition-transform duration-400',
             value ? 'translate-x-5' : 'translate-x-0.5'
           )}
         />
@@ -177,6 +178,20 @@ export default function Settings() {
         <h1 className="serif font-light text-ink" style={{ fontSize: '36px', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
           Studio <em className="text-bronze" style={{ fontStyle: 'italic' }}>Settings</em>
         </h1>
+      </div>
+
+      {/* Appearance */}
+      <div className="px-8 pb-8 max-w-2xl">
+        <p className="font-sans text-[11px] uppercase text-whisper mb-2" style={{ letterSpacing: '0.22em' }}>
+          Appearance
+        </p>
+        <p className="serif font-light text-ink mb-5" style={{ fontSize: '18px', letterSpacing: '-0.01em' }}>
+          Studio Theme
+        </p>
+        <p className="font-sans text-sm text-whisper mb-5 max-w-md">
+          Choose how your workspace looks.
+        </p>
+        <ThemeToggle variant="default" />
       </div>
 
       {/* Tab nav */}

@@ -97,11 +97,11 @@ export default function Galleries() {
 
                   {/* Stat badges — bottom of cover */}
                   <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                    <span className="flex items-center gap-1 bg-night/60 text-canvas/80 px-2 py-0.5 font-sans text-[10px]" style={{ backdropFilter: 'blur(4px)' }}>
+                    <span className="flex items-center gap-1 bg-night/60 text-white/90 px-2 py-0.5 font-sans text-[10px]" style={{ backdropFilter: 'blur(4px)' }}>
                       <Eye size={9} strokeWidth={1.5} />
                       {totalViews.toLocaleString('en-IN')}
                     </span>
-                    <span className="flex items-center gap-1 bg-night/60 text-canvas/80 px-2 py-0.5 font-sans text-[10px]" style={{ backdropFilter: 'blur(4px)' }}>
+                    <span className="flex items-center gap-1 bg-night/60 text-white/90 px-2 py-0.5 font-sans text-[10px]" style={{ backdropFilter: 'blur(4px)' }}>
                       <Heart size={9} strokeWidth={1.5} />
                       {totalFaves}
                     </span>

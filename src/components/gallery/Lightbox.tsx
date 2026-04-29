@@ -93,7 +93,7 @@ export default function Lightbox({ photo, photos, onClose, onNavigate }: Lightbo
           <div className="absolute top-0 inset-x-0 z-10 flex items-center justify-between px-5 py-4">
             {/* Counter */}
             <p
-              className="font-sans text-canvas/30 uppercase"
+              className="font-sans text-inverse-fg/30 uppercase"
               style={{ fontSize: '11px', letterSpacing: '0.22em' }}
             >
               {currentIndex + 1} / {photos.length}
@@ -113,7 +113,7 @@ export default function Lightbox({ photo, photos, onClose, onNavigate }: Lightbo
                   strokeWidth={1.5}
                   className={cn(
                     'transition-colors duration-400',
-                    favorited ? 'fill-bronze-soft text-bronze-soft' : 'text-canvas/40 hover:text-bronze-soft'
+                    favorited ? 'fill-bronze-soft text-bronze-soft' : 'text-inverse-fg/40 hover:text-bronze-soft'
                   )}
                 />
               </button>
@@ -125,7 +125,7 @@ export default function Lightbox({ photo, photos, onClose, onNavigate }: Lightbo
                 target="_blank"
                 rel="noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                className="p-3 text-canvas/40 hover:text-canvas transition-colors duration-400"
+                className="p-3 text-inverse-fg/40 hover:text-inverse-fg transition-colors duration-400"
                 aria-label="Download photo"
               >
                 <Download size={16} strokeWidth={1.5} />
@@ -134,7 +134,7 @@ export default function Lightbox({ photo, photos, onClose, onNavigate }: Lightbo
               {/* Close */}
               <button
                 onClick={onClose}
-                className="p-3 text-canvas/40 hover:text-canvas transition-colors duration-400"
+                className="p-3 text-inverse-fg/40 hover:text-inverse-fg transition-colors duration-400"
                 aria-label="Close"
                 style={{ touchAction: 'manipulation' }}
               >
@@ -147,7 +147,7 @@ export default function Lightbox({ photo, photos, onClose, onNavigate }: Lightbo
           {hasPrev && (
             <button
               onClick={() => onNavigate(photos[currentIndex - 1])}
-              className="absolute left-2 sm:left-4 z-10 text-canvas/40 hover:text-canvas transition-colors duration-400 p-3"
+              className="absolute left-2 sm:left-4 z-10 text-inverse-fg/40 hover:text-inverse-fg transition-colors duration-400 p-3"
               style={{ touchAction: 'manipulation' }}
             >
               <ChevronLeft size={24} strokeWidth={1.2} />
@@ -175,7 +175,7 @@ export default function Lightbox({ photo, photos, onClose, onNavigate }: Lightbo
             />
             {photo.caption && (
               <p
-                className="serif italic text-canvas/50 text-center mt-4 px-6"
+                className="serif italic text-inverse-fg/50 text-center mt-4 px-6"
                 style={{ fontSize: '13px', maxWidth: '480px' }}
               >
                 {photo.caption}
@@ -184,7 +184,7 @@ export default function Lightbox({ photo, photos, onClose, onNavigate }: Lightbo
 
             {/* Swipe hint — mobile only, shown once */}
             <p
-              className="sm:hidden font-sans text-[10px] text-canvas/20 uppercase mt-6"
+              className="sm:hidden font-sans text-[10px] text-inverse-fg/20 uppercase mt-6"
               style={{ letterSpacing: '0.18em' }}
             >
               swipe to navigate
@@ -195,7 +195,7 @@ export default function Lightbox({ photo, photos, onClose, onNavigate }: Lightbo
           {hasNext && (
             <button
               onClick={() => onNavigate(photos[currentIndex + 1])}
-              className="absolute right-2 sm:right-4 z-10 text-canvas/40 hover:text-canvas transition-colors duration-400 p-3"
+              className="absolute right-2 sm:right-4 z-10 text-inverse-fg/40 hover:text-inverse-fg transition-colors duration-400 p-3"
               style={{ touchAction: 'manipulation' }}
             >
               <ChevronRight size={24} strokeWidth={1.2} />

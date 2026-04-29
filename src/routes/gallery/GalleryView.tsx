@@ -30,17 +30,14 @@ export default function GalleryView() {
 
   if (!event) {
     return (
-      <div
-        className="min-h-screen flex items-center justify-center"
-        style={{ background: '#14110D' }}
-      >
+      <div className="bg-canvas min-h-screen flex items-center justify-center">
         <div className="text-center px-6">
           <p className="serif italic text-whisper text-base mb-6">
             This gallery doesn't exist yet.
           </p>
           <a
             href="/studio/overview"
-            className="font-sans text-[11px] uppercase text-canvas/40 hover:text-canvas/70 transition-colors duration-400"
+            className="font-sans text-[11px] uppercase text-inverse-fg/40 hover:text-inverse-fg/70 transition-colors duration-400"
             style={{ letterSpacing: '0.22em' }}
           >
             Return to Studio
@@ -75,10 +72,7 @@ export default function GalleryView() {
   const coupleNames = `${event.couple.brideName} & ${event.couple.groomName}`
 
   return (
-    <div
-      className="min-h-screen"
-      style={{ background: '#F6F1E8' }}
-    >
+    <div className="min-h-screen bg-canvas">
       <GalleryMeta event={event} />
 
       {/* Sticky chapter navigation — appears after cover */}

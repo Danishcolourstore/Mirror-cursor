@@ -54,7 +54,7 @@ export default function ChapterCover({ chapter }: ChapterCoverProps) {
 
           {/* Chapter title */}
           <h2
-            className="serif font-light text-canvas"
+            className="serif font-light text-inverse-fg"
             style={{
               fontSize: 'clamp(32px, 6vw, 56px)',
               letterSpacing: '-0.02em',
@@ -66,7 +66,7 @@ export default function ChapterCover({ chapter }: ChapterCoverProps) {
 
           {/* Chapter caption */}
           <p
-            className="serif italic text-canvas/50 mt-3"
+            className="serif italic text-inverse-fg/50 mt-3"
             style={{ fontSize: '15px', lineHeight: 1.5 }}
           >
             {chapter.caption}

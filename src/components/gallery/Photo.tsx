@@ -51,7 +51,7 @@ export default function Photo({ photo, onClick, className, style }: PhotoProps) 
             'transition-colors duration-400',
             favorited
               ? 'fill-bronze-soft text-bronze-soft'
-              : 'text-canvas/70 hover:text-bronze-soft'
+              : 'text-inverse-fg/70 hover:text-bronze-soft'
           )}
         />
       </button>

@@ -90,7 +90,7 @@ export default function GalleryNav({ chapters, coupleNames }: GalleryNavProps) {
                     className={cn(
                       'font-sans text-[10px] uppercase px-3 py-1.5 transition-all duration-400',
                       isActive
-                        ? 'bg-ink text-canvas'
+                        ? 'bg-fill text-on-fill'
                         : 'text-whisper hover:text-ink-soft'
                     )}
                     style={{ letterSpacing: '0.16em' }}

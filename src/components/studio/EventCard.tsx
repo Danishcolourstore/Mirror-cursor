@@ -99,7 +99,7 @@ export default function EventCard({ event }: EventCardProps) {
                 {/* Share */}
                 <button
                   onClick={(e) => { e.stopPropagation(); setShareOpen(true) }}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-ink/80 text-canvas/70 hover:text-canvas hover:bg-ink transition-all duration-300 font-sans text-[10px] uppercase"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-night/80 text-inverse-fg/75 hover:text-inverse-fg hover:bg-night transition-all duration-300 font-sans text-[10px] uppercase"
                   style={{ backdropFilter: 'blur(8px)', letterSpacing: '0.16em' }}
                 >
                   <Share2 size={11} strokeWidth={1.5} />
@@ -112,7 +112,7 @@ export default function EventCard({ event }: EventCardProps) {
                 {/* Copy link */}
                 <button
                   onClick={copyLink}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-ink/80 text-canvas/70 hover:text-canvas hover:bg-ink transition-all duration-300 font-sans text-[10px] uppercase"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-night/80 text-inverse-fg/75 hover:text-inverse-fg hover:bg-night transition-all duration-300 font-sans text-[10px] uppercase"
                   style={{ backdropFilter: 'blur(8px)', letterSpacing: '0.16em' }}
                 >
                   <Copy size={11} strokeWidth={1.5} />
@@ -125,7 +125,7 @@ export default function EventCard({ event }: EventCardProps) {
                 {/* Open workspace */}
                 <button
                   onClick={(e) => { e.stopPropagation(); navigate(`/studio/events/${event.id}`) }}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-ink/80 text-canvas/70 hover:text-canvas hover:bg-ink transition-all duration-300 font-sans text-[10px] uppercase"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2.5 bg-night/80 text-inverse-fg/75 hover:text-inverse-fg hover:bg-night transition-all duration-300 font-sans text-[10px] uppercase"
                   style={{ backdropFilter: 'blur(8px)', letterSpacing: '0.16em' }}
                 >
                   Open

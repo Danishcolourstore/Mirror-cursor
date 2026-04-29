@@ -17,14 +17,14 @@ import {
   MOCK_LOVED_PHOTO_URLS,
 } from '../../data/mockInsights'
 
-const INK = '#1C1814'
-const BRONZE = '#8B6F47'
-const MUTED = '#D9D0BE'
-const WHISPER = '#7A736A'
+const INK = 'var(--ink)'
+const BRONZE = 'var(--accent)'
+const MUTED = 'var(--border)'
+const WHISPER = 'var(--whisper)'
 
 const tooltipStyle = {
-  background: '#F6F1E8',
-  border: '1px solid #D9D0BE',
+  background: 'var(--canvas)',
+  border: '1px solid var(--border)',
   borderRadius: 0,
   fontSize: '11px',
   fontFamily: 'DM Sans, system-ui, sans-serif',
