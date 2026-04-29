@@ -16,23 +16,14 @@ const CROSSFADE_S = 1.2
 const WHITE_DURATION_S = 0.8
 const SWIPE_DOWN_PX = 70
 
-function markGalleryOpened(slug: string): void {
-  try {
-    localStorage.setItem(`gallery-opened-${slug}`, 'true')
-  } catch {
-    /* ignore */
-  }
-}
-
 type Phase = 'dark' | 'title' | 'slides' | 'white'
 
 type Props = {
-  slug: string
   event: Event
   onCompleted: () => void
 }
 
-export default function CinematicIntro({ slug, event, onCompleted }: Props) {
+export default function CinematicIntro({ event, onCompleted }: Props) {
   const photos = useMemo(() => collectCinematicIntroPhotoUrls(event), [event])
 
   const [phase, setPhase] = useState<Phase>('dark')
@@ -102,9 +93,9 @@ export default function CinematicIntro({ slug, event, onCompleted }: Props) {
     return () => window.clearInterval(id)
   }, [phase, photos.length, finalize])
 
-  const skipLinkVisible = phase === 'slides' && slideIndex >= 2
+  const showSkipControl = phase === 'slides'
 
-  const handleEnterGalleryClick = (e: { preventDefault: () => void }) => {
+  const handleSkipClick = (e: { preventDefault: () => void }) => {
     e.preventDefault()
     finalize()
   }
@@ -208,26 +199,18 @@ export default function CinematicIntro({ slug, event, onCompleted }: Props) {
         </div>
       )}
 
-      <AnimatePresence>
-        {skipLinkVisible && (
-          <motion.div
-            key="enter-gallery"
-            className="pointer-events-auto absolute bottom-10 left-0 right-0 z-[70] flex justify-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.9, ease: [0.42, 0, 0.58, 1] }}
+      {showSkipControl && (
+        <div className="pointer-events-auto absolute right-5 top-5 z-[70]">
+          <button
+            type="button"
+            onClick={handleSkipClick}
+            className="font-sans rounded-full border border-white/20 bg-white/[0.15] px-3 py-2 text-[12px] uppercase text-white/80 backdrop-blur-[8px] transition-opacity hover:opacity-100"
+            style={{ letterSpacing: '0.08em' }}
           >
-            <button
-              type="button"
-              onClick={handleEnterGalleryClick}
-              className="font-sans text-sm text-white/70 transition-opacity hover:text-white/90"
-            >
-              Enter Gallery
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            Skip Intro →
+          </button>
+        </div>
+      )}
 
       <AnimatePresence>
         {phase === 'white' && (
@@ -241,7 +224,6 @@ export default function CinematicIntro({ slug, event, onCompleted }: Props) {
               ease: [0.42, 0, 0.58, 1],
             }}
             onAnimationComplete={() => {
-              markGalleryOpened(slug)
               onCompleted()
             }}
           />

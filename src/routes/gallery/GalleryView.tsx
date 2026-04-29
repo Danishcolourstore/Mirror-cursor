@@ -73,14 +73,7 @@ export default function GalleryView() {
 
   const coupleNames = `${event.couple.brideName} & ${event.couple.groomName}`
 
-  const galleryOpenedKey = `gallery-opened-${event.slug}`
-  const [introDismissed, setIntroDismissed] = useState(() => {
-    try {
-      return localStorage.getItem(galleryOpenedKey) != null
-    } catch {
-      return true
-    }
-  })
+  const [introDismissed, setIntroDismissed] = useState(false)
 
   useEffect(() => {
     if (introDismissed) return
@@ -96,7 +89,6 @@ export default function GalleryView() {
       {!introDismissed && (
         <CinematicIntro
           key={event.slug}
-          slug={event.slug}
           event={event}
           onCompleted={() => setIntroDismissed(true)}
         />
