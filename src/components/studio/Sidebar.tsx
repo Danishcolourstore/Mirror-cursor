@@ -80,10 +80,10 @@ export default function Sidebar() {
             <div key={section.label} className="mb-6">
               <p className="nav-label px-3 mb-2">{section.label}</p>
               <ul className="space-y-0.5">
-                {section.items.map((item) => (
-                  <li key={item.to}>
+                {section.items.map(({ to, icon: Icon, label }) => (
+                  <li key={to}>
                     <NavLink
-                      to={item.to}
+                      to={to}
                       className={({ isActive }) =>
                         cn(
                           'flex items-center gap-3 pl-2.5 pr-3 py-2 rounded-md font-sans transition-colors duration-400 border-l-[3px]',
@@ -95,13 +95,14 @@ export default function Sidebar() {
                     >
                       {({ isActive }) => (
                         <>
-                          <item.icon
+                          <Icon
                             size={15}
                             strokeWidth={isActive ? 1.8 : 1.5}
                             className={cn('shrink-0', isActive ? 'text-bronze' : 'text-whisper')}
+                            aria-hidden
                           />
                           <span className="font-sans text-[13px] font-normal leading-none">
-                            {item.label}
+                            {label}
                           </span>
                         </>
                       )}
@@ -141,22 +142,23 @@ export default function Sidebar() {
         style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       >
         <nav className="flex items-stretch">
-          {mobileItems.map((item) => {
+          {mobileItems.map(({ to, icon: Icon, label, shortLabel }) => {
             const isActive =
-              location.pathname === item.to ||
-              (item.to !== '/studio/overview' && location.pathname.startsWith(item.to + '/'))
+              location.pathname === to ||
+              (to !== '/studio/overview' && location.pathname.startsWith(to + '/'))
             return (
               <NavLink
-                key={item.to}
-                to={item.to}
-                className="relative flex-1 flex flex-col items-center justify-center gap-1 py-2.5 min-w-0"
+                key={to}
+                to={to}
+                className="relative flex min-w-0 flex-1 flex-col items-center justify-center gap-1 py-2.5"
                 style={{ touchAction: 'manipulation' }}
               >
-                <item.icon
+                <Icon
+                  aria-hidden
                   size={20}
                   strokeWidth={isActive ? 1.8 : 1.4}
                   className={cn(
-                    'transition-colors duration-400',
+                    'block shrink-0 transition-colors duration-400',
                     isActive ? 'text-bronze' : 'text-whisper'
                   )}
                 />
@@ -167,11 +169,11 @@ export default function Sidebar() {
                   )}
                   style={{ letterSpacing: '0.12em' }}
                 >
-                  {item.shortLabel ?? item.label}
+                  {shortLabel ?? label}
                 </span>
 
                 {isActive && (
-                  <span className="absolute bottom-1.5 w-1 h-1 rounded-full bg-bronze" />
+                  <span className="absolute bottom-1.5 h-1 w-1 rounded-full bg-bronze" />
                 )}
               </NavLink>
             )

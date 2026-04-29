@@ -1,6 +1,8 @@
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useEventsStore } from '../../stores/eventsStore'
 import { usePageMeta } from '../../lib/usePageMeta'
+import CinematicIntro from '../../components/gallery/CinematicIntro'
 import Cover from '../../components/gallery/Cover'
 import Prologue from '../../components/gallery/Prologue'
 import ChapterIndex from '../../components/gallery/ChapterIndex'
@@ -71,8 +73,36 @@ export default function GalleryView() {
 
   const coupleNames = `${event.couple.brideName} & ${event.couple.groomName}`
 
+  const galleryOpenedKey = `gallery-opened-${event.slug}`
+  const [introDismissed, setIntroDismissed] = useState(() => {
+    try {
+      return localStorage.getItem(galleryOpenedKey) != null
+    } catch {
+      return true
+    }
+  })
+
+  useEffect(() => {
+    if (introDismissed) return
+    const prev = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = prev
+    }
+  }, [introDismissed])
+
   return (
-    <div className="min-h-screen bg-canvas">
+    <>
+      {!introDismissed && (
+        <CinematicIntro
+          key={event.slug}
+          slug={event.slug}
+          event={event}
+          onCompleted={() => setIntroDismissed(true)}
+        />
+      )}
+
+      <div className="min-h-screen bg-canvas">
       <GalleryMeta event={event} />
 
       {/* Sticky chapter navigation — appears after cover */}
@@ -111,5 +141,6 @@ export default function GalleryView() {
       {/* 6. Floating actions */}
       <TopActions event={event} />
     </div>
+    </>
   )
 }

@@ -24,6 +24,11 @@ export function formatMonthYear(dateStr: string): string {
   })
 }
 
+/**
+ * Indian-currency shorthand for studio UI.
+ * - ≥ 1 lakh → `₹…L` (lakhs; do not append another "L" in JSX)
+ * - ≥ 1 k → `₹…K`
+ */
 export function formatCurrency(amount: number): string {
   if (amount >= 100000) {
     return `₹${(amount / 100000).toFixed(1)}L`

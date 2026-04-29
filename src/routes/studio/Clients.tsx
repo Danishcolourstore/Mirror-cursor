@@ -65,9 +65,8 @@ export default function Clients() {
           </p>
           <p className="serif font-light text-ink leading-none" style={{ fontSize: '32px', letterSpacing: '-0.02em' }}>
             <em className="text-bronze" style={{ fontStyle: 'italic' }}>
-              {formatCurrency(totalRevenue).replace('₹', '')}
+              {formatCurrency(totalRevenue)}
             </em>
-            <span className="text-ink">L</span>
           </p>
         </div>
         <div className="px-6 py-5">
@@ -100,14 +99,24 @@ export default function Clients() {
           />
         ) : (
         <div className="border border-muted">
-          {/* Table header */}
-          <div className="grid px-5 py-2.5 bg-canvas-deeper border-b border-muted"
-            style={{ gridTemplateColumns: '1fr 1.2fr 1fr 0.8fr 0.8fr 32px' }}>
-            {['Client', 'Wedding', 'Package', 'Paid', 'Status', ''].map((h) => (
-              <p key={h} className="font-sans text-[10px] uppercase text-whisper" style={{ letterSpacing: '0.18em' }}>
-                {h}
-              </p>
+          {/* Table header — gap-x keeps column labels visually distinct */}
+          <div
+            className="grid gap-x-6 gap-y-1 border-b border-muted bg-canvas-deep px-5 py-3"
+            style={{
+              gridTemplateColumns: 'minmax(120px, 1.15fr) minmax(140px, 1.35fr) minmax(88px, 1fr) minmax(80px, 0.85fr) minmax(88px, 0.85fr) 32px',
+            }}
+          >
+            {(['Client', 'Wedding', 'Package', 'Paid', 'Status'] as const).map((label) => (
+              <div key={label} className="min-w-0">
+                <p
+                  className="font-sans text-[10px] uppercase leading-snug text-whisper"
+                  style={{ letterSpacing: '0.16em' }}
+                >
+                  {label}
+                </p>
+              </div>
             ))}
+            <div className="min-w-0 shrink-0 w-8" aria-hidden />
           </div>
 
           {filtered.map((event, i) => {
@@ -116,10 +125,12 @@ export default function Clients() {
               <div
                 key={event.id}
                 className={cn(
-                  'grid items-center px-5 py-4 cursor-pointer hover:bg-canvas-deeper transition-colors duration-400 group',
+                  'grid cursor-pointer items-center gap-x-6 gap-y-1 px-5 py-4 transition-colors duration-400 hover:bg-canvas-deep group',
                   i < filtered.length - 1 && 'border-b border-muted'
                 )}
-                style={{ gridTemplateColumns: '1fr 1.2fr 1fr 0.8fr 0.8fr 32px' }}
+                style={{
+                  gridTemplateColumns: 'minmax(120px, 1.15fr) minmax(140px, 1.35fr) minmax(88px, 1fr) minmax(80px, 0.85fr) minmax(88px, 0.85fr) 32px',
+                }}
                 onClick={() => navigate(`/studio/events/${event.id}`)}
               >
                 {/* Client */}

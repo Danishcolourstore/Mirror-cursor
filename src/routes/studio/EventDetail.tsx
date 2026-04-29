@@ -661,14 +661,16 @@ function ChaptersTab({ event }: { event: Event }) {
                       loading="lazy"
                     />
                   </div>
-                  <div className="flex-1 px-4 py-4 flex items-center gap-4 min-w-0">
-                    <span className="serif italic text-bronze text-sm w-7 shrink-0">{toRoman(ch.number)}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="serif font-normal text-[15px] text-ink leading-tight truncate">{ch.title}</p>
-                      <p className="serif italic text-[12px] text-whisper mt-0.5 truncate">{ch.caption}</p>
-                      <p className="font-sans text-[11px] text-whisper/60 mt-1">{ch.photos.length} photos</p>
+                  <div className="flex-1 px-4 py-4 flex flex-col gap-3 min-w-0 sm:flex-row sm:items-start sm:gap-4">
+                    <div className="flex items-start gap-3 min-w-0 sm:flex-1">
+                      <span className="serif italic text-bronze text-sm w-8 shrink-0 pt-0.5">{toRoman(ch.number)}</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="serif font-normal text-sm sm:text-[15px] text-ink leading-snug break-words">{ch.title}</p>
+                        <p className="serif italic text-[11px] sm:text-[12px] text-whisper mt-1 leading-relaxed break-words line-clamp-2">{ch.caption}</p>
+                        <p className="font-sans text-[11px] text-whisper/60 mt-1.5">{ch.photos.length} photos</p>
+                      </div>
                     </div>
-                    <div className="flex items-center gap-2 shrink-0">
+                    <div className="flex shrink-0 flex-wrap items-center justify-end gap-2 sm:flex-col sm:items-end sm:justify-start">
                       <span className={chapterStatusPill[ch.status]}>{ch.status}</span>
                       <button
                         onClick={() => isEditing ? setEditingId(null) : openEditor(ch)}
