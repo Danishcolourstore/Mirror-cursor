@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 
-import StudioPathRouter from './components/StudioPathRouter'
-import NotFound from './routes/NotFound'
+const StudioPathRouter = lazy(() => import('./components/StudioPathRouter'))
+const NotFound = lazy(() => import('./routes/NotFound'))
 import ShortcutsOverlay from './components/studio/ShortcutsOverlay'
 import ToastHost from './components/ui/ToastHost'
 import { PageLoadingSkeleton } from './components/ui/LoadingStates'
 // Gallery routes
-import GalleryView from './routes/gallery/GalleryView'
 import ChapterView from './routes/gallery/ChapterView'
+import GuestGalleryPage from './pages/GuestGalleryPage'
 
 import PageTransition from './components/ui/PageTransition'
 
@@ -40,15 +40,17 @@ export default function App() {
     <>
       <ShortcutsOverlay />
       <ToastHost />
-      <AnimatePresence mode="wait" initial={false}>
-        <Routes location={location} key={location.key}>
-          <Route path="/" element={<Navigate to="/studio/overview" replace />} />
-          <Route path="/studio/*" element={<StudioPathRouter />} />
-          <Route path="/g/:slug" element={<PageTransition mode="gallery"><GalleryView /></PageTransition>} />
-          <Route path="/g/:slug/:chapterId" element={<PageTransition mode="gallery"><ChapterView /></PageTransition>} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </AnimatePresence>
+      <Suspense fallback={<PageLoadingSkeleton />}>
+        <AnimatePresence mode="wait" initial={false}>
+          <Routes location={location} key={location.key}>
+            <Route path="/" element={<Navigate to="/studio/overview" replace />} />
+            <Route path="/studio/*" element={<StudioPathRouter />} />
+            <Route path="/g/:slug/:chapterId" element={<PageTransition mode="gallery"><ChapterView /></PageTransition>} />
+            <Route path="/g/:guestToken" element={<PageTransition mode="gallery"><GuestGalleryPage /></PageTransition>} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </AnimatePresence>
+      </Suspense>
     </>
   )
 }

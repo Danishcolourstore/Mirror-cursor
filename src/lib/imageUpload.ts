@@ -1,9 +1,9 @@
-import type { Photo, PhotoAspect } from '../types/photo'
+import type { Photo } from '../types/photo'
 
 const MAX_WIDTH = 1400
 const QUALITY = 0.78
 
-const ratioToAspect = (w: number, h: number): PhotoAspect => {
+const ratioToAspect = (w: number, h: number): string => {
   const r = w / h
   if (r > 1.6) return 'wide'
   if (r > 1.05) return 'landscape'
@@ -78,6 +78,7 @@ export async function filesToPhotos(files: FileList | File[]): Promise<UploadRes
       photos.push({
         id: `up-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
         url: dataUrl,
+        thumbUrl: dataUrl,
         aspect: ratioToAspect(width, height),
         role: 'candid',
         favorited: false,

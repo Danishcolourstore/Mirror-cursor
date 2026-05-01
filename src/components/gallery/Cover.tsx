@@ -1,32 +1,61 @@
-import { useState } from 'react'
-import { motion, type Transition } from 'framer-motion'
+import { useEffect, useMemo, useState } from 'react'
 import type { Event } from '../../types/event'
-import { formatMonthYear } from '../../lib/format'
-import { useStudioStore } from '../../stores/studioStore'
+import { formatVenueMonthYear } from '../../lib/format'
 
 type CoverProps = {
   event: Event
 }
 
-const EASE: [number, number, number, number] = [0.2, 0.6, 0.2, 1]
-
-const fadeUp = (delay: number) => ({
-  initial: { opacity: 0, y: 18 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 1.0, delay, ease: EASE } as Transition,
-})
-
 export default function Cover({ event }: CoverProps) {
   const { brideName, groomName } = event.couple
-  const tagline = useStudioStore((s) => s.tagline)
+  const selectedCoverUrl = (() => {
+    if (!event.galleryCoverPhotoId) return event.coverImage
+    const all = event.chapters.flatMap((ch) => ch.photos)
+    return all.find((p) => p.id === event.galleryCoverPhotoId)?.url ?? event.coverImage
+  })()
+  const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 768)
   const [imgLoaded, setImgLoaded] = useState(false)
+  const coverLine = useMemo(
+    () => formatVenueMonthYear(event.venue.location, event.date.start),
+    [event.venue.location, event.date.start]
+  )
+  const overlayAlpha = Math.min(Math.max(event.galleryCoverTintPct ?? 24, 0), 50) / 100
+  const coverHeight =
+    event.galleryCoverSize === 'small'
+      ? '78svh'
+      : event.galleryCoverSize === 'medium'
+        ? '92svh'
+        : '100svh'
+
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 768px)')
+    const onChange = () => setIsDesktop(media.matches)
+    onChange()
+    media.addEventListener('change', onChange)
+    return () => media.removeEventListener('change', onChange)
+  }, [])
+
+  useEffect(() => {
+    const preload = document.createElement('link')
+    preload.rel = 'preload'
+    preload.as = 'image'
+    preload.href = selectedCoverUrl
+    document.head.appendChild(preload)
+    return () => {
+      if (preload.parentNode) preload.parentNode.removeChild(preload)
+    }
+  }, [selectedCoverUrl])
+
+  const handleBegin = () => {
+    const firstPhoto = document.querySelector<HTMLElement>('.first-gallery-photo')
+    firstPhoto?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
 
   return (
     <section
       className="relative overflow-hidden flex flex-col items-center justify-center"
-      style={{ height: '100svh', minHeight: '600px' }}
+      style={{ height: coverHeight, minHeight: '560px' }}
     >
-      {/* Shimmer placeholder — visible until image loads */}
       {!imgLoaded && (
         <div
           className="absolute inset-0 z-0"
@@ -38,119 +67,85 @@ export default function Cover({ event }: CoverProps) {
         />
       )}
 
-      {/* Ken Burns hero image */}
-      <motion.div
+      <div
         className="absolute inset-0 z-0"
-        initial={{ scale: 1.0 }}
-        animate={{ scale: 1.12 }}
-        transition={{ duration: 24, ease: 'easeOut' }}
+        style={{
+          transform: 'scale(1)',
+          animation: isDesktop
+            ? 'kenBurnsCover 18s cubic-bezier(0.16, 1, 0.3, 1) infinite alternate'
+            : 'none',
+        }}
       >
-        <motion.img
-          src={event.coverImage}
+        <img
+          src={selectedCoverUrl}
           alt={`${brideName} & ${groomName}`}
           className="w-full h-full object-cover"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
           onLoad={() => setImgLoaded(true)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: imgLoaded ? 1 : 0 }}
-          transition={{ duration: 1.2, ease: [0.2, 0.6, 0.2, 1] }}
+          style={{
+            opacity: imgLoaded ? 1 : 0,
+            transition: 'opacity 320ms cubic-bezier(0.2, 0.6, 0.2, 1)',
+          }}
         />
-      </motion.div>
+      </div>
 
-      {/* Dark veil */}
       <div
         className="absolute inset-0 z-10"
         style={{
-          background:
-            'linear-gradient(180deg, rgba(20,17,13,0.4) 0%, rgba(20,17,13,0.15) 40%, rgba(20,17,13,0.7) 100%)',
+          background: `linear-gradient(180deg, rgba(20,17,13,${overlayAlpha + 0.1}) 0%, rgba(20,17,13,${Math.max(
+            overlayAlpha - 0.12,
+            0.08
+          )}) 40%, rgba(20,17,13,${overlayAlpha + 0.2}) 100%)`,
         }}
       />
 
-      {/* Content */}
       <div className="relative z-20 flex flex-col items-center text-center px-6 select-none">
-        {/* Eyebrow */}
-        <motion.p
-          className="serif italic text-inverse-fg/70 mb-6"
-          style={{ fontSize: '14px', letterSpacing: '0.04em' }}
-          {...fadeUp(0.4)}
-        >
-          {tagline}
-        </motion.p>
-
-        {/* Couple names */}
-        <motion.h1
-          className="serif font-light text-inverse-fg leading-none"
+        <h1
+          className="serif italic font-light leading-none"
           style={{
-            fontSize: 'clamp(48px, 11vw, 96px)',
-            letterSpacing: '-0.02em',
+            fontSize: 'clamp(56px, 11vw, 96px)',
+            letterSpacing: '-0.01em',
+            color: 'rgba(246,241,232,0.95)',
+            transition: 'opacity 320ms ease',
           }}
-          {...fadeUp(1.0)}
         >
-          {brideName}
-          <em
-            className="font-light"
-            style={{
-              fontStyle: 'italic',
-              color: 'rgba(246,241,232,0.45)',
-              margin: '0 0.18em',
-            }}
+          {brideName} &amp; {groomName}
+        </h1>
+
+        <p
+          className="serif italic mt-5"
+          style={{ fontSize: '14px', opacity: 0.6, color: '#F6F1E8', letterSpacing: '-0.01em' }}
+        >
+          {coverLine}
+        </p>
+
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1.5">
+          <button
+            type="button"
+            onClick={handleBegin}
+            className="font-sans italic uppercase transition-opacity duration-300 hover:opacity-90"
+            style={{ fontSize: '13px', letterSpacing: '0.08em', color: '#8B6F47' }}
           >
-            &amp;
-          </em>
-          {groomName}
-        </motion.h1>
-
-        {/* Location · Date */}
-        <motion.p
-          className="font-sans text-inverse-fg/55 mt-5 uppercase"
-          style={{ fontSize: '11px', letterSpacing: '0.32em' }}
-          {...fadeUp(1.8)}
-        >
-          {event.venue.location} · {event.venue.city} · {formatMonthYear(event.date.start)}
-        </motion.p>
-
-        {/* 1px vertical divider */}
-        <motion.div
-          className="mt-8 bg-canvas/30"
-          style={{ width: '1px', height: '40px' }}
-          initial={{ opacity: 0, scaleY: 0 }}
-          animate={{ opacity: 1, scaleY: 1 }}
-          transition={{ duration: 0.6, delay: 2.4, ease: [0.2, 0.6, 0.2, 1] }}
-        />
-
-        {/* Begin scroll hint */}
-        <motion.div
-          className="mt-4 flex flex-col items-center gap-1.5"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 3.0 }}
-        >
-          <motion.div
-            animate={{ opacity: [0.4, 0.85, 0.4], y: [0, 4, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            className="flex flex-col items-center gap-1"
+            BEGIN
+          </button>
+          <svg
+            width="12"
+            height="8"
+            viewBox="0 0 12 8"
+            fill="none"
+            className="text-[#8B6F47]"
+            style={{ animation: 'chevronPulse 1.9s ease-in-out infinite', opacity: 0.72 }}
           >
-            <p
-              className="font-sans text-inverse-fg/50 uppercase"
-              style={{ fontSize: '10px', letterSpacing: '0.32em' }}
-            >
-              Begin
-            </p>
-            <svg
-              width="12"
-              height="8"
-              viewBox="0 0 12 8"
-              fill="none"
-              className="text-inverse-fg/40"
-            >
-              <path
-                d="M1 1L6 6L11 1"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-              />
-            </svg>
-          </motion.div>
-        </motion.div>
+            <path
+              d="M1 1L6 6L11 1"
+              stroke="currentColor"
+              strokeWidth="1.2"
+              strokeLinecap="round"
+            />
+          </svg>
+        </div>
       </div>
     </section>
   )

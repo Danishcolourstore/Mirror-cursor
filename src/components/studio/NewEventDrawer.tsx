@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X, Check } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useEventsStore } from '../../stores/eventsStore'
+import { useSettingsStore } from '../../stores/settingsStore'
 import { useToastStore } from '../../stores/toastStore'
 import { cn } from '../../lib/cn'
 import type { Event, EventStatus } from '../../types/event'
@@ -79,6 +80,7 @@ export default function NewEventDrawer({ open, onClose }: NewEventDrawerProps) {
   const [step, setStep] = useState<1 | 2 | 3>(1)
   const [submitted, setSubmitted] = useState(false)
   const { addEvent } = useEventsStore()
+  const defaults = useSettingsStore((s) => s.studioDefaultTheme)
   const pushToast = useToastStore((s) => s.push)
   const navigate = useNavigate()
 
@@ -119,6 +121,11 @@ export default function NewEventDrawer({ open, onClose }: NewEventDrawerProps) {
         price: Number(form.packagePrice) || 0,
         paid: Number(form.packagePaid) || 0,
       },
+      galleryCoverTintPct: defaults.coverOverlayTintPct,
+      photoGridSpacing: defaults.photoGridSpacing,
+      galleryMusicDefaultOn: defaults.musicDefaultOn,
+      galleryCoverSize: 'fullscreen',
+      photoGridCellScale: 'medium',
     }
     addEvent(newEvent)
     setSubmitted(true)

@@ -1,5 +1,12 @@
 import type { Photo } from '../types/photo'
 
+type PhotoWithoutThumb = Omit<Photo, 'thumbUrl'>
+
+const withThumb = (photo: PhotoWithoutThumb): Photo => ({
+  ...photo,
+  thumbUrl: photo.url,
+})
+
 // Ananya & Rohan — Mehendi chapter photos
 export const mehendiphotos: Photo[] = [
   {
@@ -83,7 +90,7 @@ export const mehendiphotos: Photo[] = [
     favorited: false,
     views: 31,
   },
-]
+].map(withThumb)
 
 // Ananya & Rohan — Haldi chapter photos
 export const haldiPhotos: Photo[] = [
@@ -168,7 +175,7 @@ export const haldiPhotos: Photo[] = [
     favorited: false,
     views: 27,
   },
-]
+].map(withThumb)
 
 // Ananya & Rohan — Wedding chapter photos
 export const weddingPhotos: Photo[] = [
@@ -278,7 +285,7 @@ export const weddingPhotos: Photo[] = [
     favorited: false,
     views: 38,
   },
-]
+].map(withThumb)
 
 const priyaHaldiUrls = [
   'https://i.ibb.co/5WW16LCs/imgi-4-bb9b1608c16311f09e450a58a9feac02-Copy.webp',
@@ -371,6 +378,7 @@ const buildPriyaChapterPhotos = (
     return {
       id: `${idPrefix}${oneBased}`,
       url,
+      thumbUrl: url,
       aspect: oneBased % 3 === 0 ? 'landscape' : 'portrait',
       role: oneBased === 1 ? 'establish' : isHero ? 'hero' : oneBased % 5 === 0 ? 'detail' : 'candid',
       caption: isHero ? heroCaptions[oneBased] : undefined,

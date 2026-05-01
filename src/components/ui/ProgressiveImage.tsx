@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { motion } from 'framer-motion'
 import { cn } from '../../lib/cn'
 
 type ProgressiveImageProps = {
@@ -34,7 +33,7 @@ export default function ProgressiveImage({
         />
       )}
 
-      <motion.img
+      <img
         src={src}
         alt={alt}
         className={cn('w-full h-full object-cover', className)}
@@ -42,9 +41,10 @@ export default function ProgressiveImage({
         decoding="async"
         onLoad={() => setLoaded(true)}
         onError={() => setErrored(true)}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: loaded ? 1 : 0 }}
-        transition={{ duration: 0.7, ease: [0.2, 0.6, 0.2, 1] }}
+        style={{
+          opacity: loaded ? 1 : 0,
+          transition: 'opacity 320ms cubic-bezier(0.2, 0.6, 0.2, 1)',
+        }}
       />
 
       {/* Error state */}

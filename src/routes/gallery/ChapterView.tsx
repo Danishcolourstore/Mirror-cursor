@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
-import { useEventsStore } from '../../stores/eventsStore'
+import { useLivePhotos } from '../../data/gallery/useLivePhotos'
 import { usePageMeta } from '../../lib/usePageMeta'
 import ChapterCover from '../../components/gallery/ChapterCover'
 import PhotoGrid from '../../components/gallery/PhotoGrid'
@@ -11,10 +11,11 @@ import { toRoman } from '../../lib/format'
 
 export default function ChapterView() {
   const { slug, chapterId } = useParams()
-  const { getEventBySlug } = useEventsStore()
+  const slugKey = slug?.trim() ?? ''
+  const { data: gallery, isPending } = useLivePhotos(slug)
 
-  const event = getEventBySlug(slug ?? '')
-  const liveChapters = event?.chapters.filter((c) => c.status === 'live') ?? []
+  const event = gallery?.event
+  const liveChapters = gallery?.liveChapters ?? []
   const chapter = liveChapters.find((c) => c.id === chapterId)
   const chapterIdx = liveChapters.findIndex((c) => c.id === chapterId)
   const prevChapter = chapterIdx > 0 ? liveChapters[chapterIdx - 1] : null
@@ -25,11 +26,13 @@ export default function ChapterView() {
     window.scrollTo({ top: 0, behavior: 'instant' })
   }, [chapterId])
 
-  if (!event || !chapter) {
+  if (!slugKey || isPending || !event || !chapter) {
     return (
       <div className="bg-canvas flex min-h-screen flex-col items-center justify-center gap-6">
-        <p className="serif italic text-whisper">Chapter not found.</p>
-        {event && (
+        <p className="serif italic text-whisper">
+          {isPending ? 'Opening…' : 'Chapter not found.'}
+        </p>
+        {!isPending && event && (
           <Link
             to={`/g/${slug}`}
             className="font-sans text-[11px] uppercase text-inverse-fg/40 hover:text-inverse-fg/70 transition-colors"

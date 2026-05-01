@@ -1,179 +1,143 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import Photo from './Photo'
-import HeroPause from './HeroPause'
-import Lightbox from './Lightbox'
-import type { Photo as PhotoType } from '../../types/photo'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import type { RefObject } from 'react'
+import type { Photo as LegacyPhoto } from '../../types/photo'
+import PhotoCard from './PhotoCard'
+
+type PhotoGridItem = {
+  id: string
+  src: string
+  alt: string
+  chapter: string
+}
 
 type PhotoGridProps = {
-  photos: PhotoType[]
+  photos: Array<LegacyPhoto | PhotoGridItem>
+  favoritedIds?: string[] | Set<string>
+  onToggleFavorite?: (id: string) => void
+  onPhotoOpen?: (index: number) => void
+  endSentinelRef?: RefObject<HTMLDivElement | null>
 }
 
-type RowTemplate = 'row-1' | 'row-2' | 'row-3' | 'row-2-wide' | 'row-2-tall'
-
-function buildRows(photos: PhotoType[]): Array<{ template: RowTemplate; photos: PhotoType[] }> {
-  const rows: Array<{ template: RowTemplate; photos: PhotoType[] }> = []
-  let i = 0
-
-  while (i < photos.length) {
-    const photo = photos[i]
-
-    // Hero / establish / breath always solo — hero gets HeroPause treatment
-    if (photo.role === 'hero' || photo.role === 'establish' || photo.role === 'breath') {
-      rows.push({ template: 'row-1', photos: [photo] })
-      i++
-      continue
+function normalizePhotos(
+  photos: Array<LegacyPhoto | PhotoGridItem>
+): PhotoGridItem[] {
+  return photos.map((photo) => {
+    const source = 'src' in photo ? photo.src : photo.url
+    const caption = 'alt' in photo ? photo.alt : photo.caption
+    return {
+      id: photo.id,
+      src: source,
+      alt: caption ?? 'Wedding moment',
+      chapter: 'chapter' in photo ? photo.chapter : 'Wedding Day',
     }
-
-    const remaining = photos.length - i
-
-    // Three candid/detail photos in a row
-    if (
-      remaining >= 3 &&
-      photos[i + 1]?.role !== 'hero' &&
-      photos[i + 2]?.role !== 'hero'
-    ) {
-      rows.push({ template: 'row-3', photos: [photos[i], photos[i + 1], photos[i + 2]] })
-      i += 3
-      continue
-    }
-
-    if (remaining >= 2 && photos[i + 1]?.role !== 'hero') {
-      const next = photos[i + 1]
-      if (photo.aspect === 'landscape' && next.aspect === 'portrait') {
-        rows.push({ template: 'row-2-wide', photos: [photo, next] })
-      } else if (photo.aspect === 'portrait' && next.aspect === 'landscape') {
-        rows.push({ template: 'row-2-tall', photos: [photo, next] })
-      } else {
-        rows.push({ template: 'row-2', photos: [photo, next] })
-      }
-      i += 2
-      continue
-    }
-
-    rows.push({ template: 'row-1', photos: [photo] })
-    i++
-  }
-
-  return rows
+  })
 }
 
-// Aspect ratio strings for each cell position
-const cellAspect: Record<RowTemplate, string[]> = {
-  'row-1':       ['3/2'],
-  'row-2':       ['1/1', '1/1'],
-  'row-3':       ['4/5', '4/5', '4/5'],
-  'row-2-wide':  ['3/2', '4/5'],
-  'row-2-tall':  ['4/5', '3/2'],
-}
+export default function PhotoGrid({
+  photos,
+  favoritedIds,
+  onToggleFavorite,
+  onPhotoOpen,
+  endSentinelRef,
+}: PhotoGridProps) {
+  const normalized = useMemo(() => normalizePhotos(photos), [photos])
+  const [visibleIds, setVisibleIds] = useState<Set<string>>(() => new Set())
+  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map())
 
-const rowCols: Record<RowTemplate, string> = {
-  'row-1':       '1fr',
-  'row-2':       '1fr 1fr',
-  'row-3':       '1fr 1fr 1fr',
-  'row-2-wide':  '2fr 1fr',
-  'row-2-tall':  '1fr 2fr',
-}
+  const favoriteSet = useMemo(() => {
+    if (favoritedIds instanceof Set) return favoritedIds
+    if (Array.isArray(favoritedIds)) return new Set(favoritedIds)
+    return new Set<string>()
+  }, [favoritedIds])
 
-// On small screens, collapse 3-col rows to 2+1 pattern
-function MobileAwareRow({
-  row,
-  rowIdx,
-  onOpen,
-}: {
-  row: { template: RowTemplate; photos: PhotoType[] }
-  rowIdx: number
-  onOpen: (p: PhotoType) => void
-}) {
-  if (row.photos[0].role === 'hero') {
-    return (
-      <HeroPause
-        key={`row-${rowIdx}`}
-        photo={row.photos[0]}
-        onLightboxOpen={() => onOpen(row.photos[0])}
-      />
+  // Intersection Observer for staggered reveal
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        setVisibleIds((current) => {
+          const next = new Set(current)
+          entries.forEach((entry) => {
+            const target = entry.target as HTMLElement
+            const id = target.dataset.photoId
+            if (!id) return
+            if (entry.isIntersecting) {
+              next.add(id)
+            }
+          })
+          return next
+        })
+      },
+      { threshold: 0.22, rootMargin: '20% 0px -10% 0px' }
     )
-  }
 
-  // row-3 becomes a 2+1 pair on small screens
-  if (row.template === 'row-3') {
-    return (
-      <motion.div
-        key={`row-${rowIdx}`}
-        className="flex flex-col gap-1.5 md:gap-2 sm:contents"
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-60px' }}
-        transition={{ duration: 0.9, ease: [0.2, 0.6, 0.2, 1] }}
-      >
-        {/* Mobile: top pair + bottom single */}
-        <div className="grid sm:hidden" style={{ gridTemplateColumns: '1fr 1fr', gap: '6px' }}>
-          <Photo photo={row.photos[0]} onClick={() => onOpen(row.photos[0])} style={{ aspectRatio: '1/1' }} />
-          <Photo photo={row.photos[1]} onClick={() => onOpen(row.photos[1])} style={{ aspectRatio: '1/1' }} />
-        </div>
-        {row.photos[2] && (
-          <div className="sm:hidden">
-            <Photo photo={row.photos[2]} onClick={() => onOpen(row.photos[2])} style={{ aspectRatio: '3/2' }} />
-          </div>
-        )}
-        {/* Desktop: all 3 in a row */}
-        <div
-          className="hidden sm:grid"
-          style={{ gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}
-        >
-          {row.photos.map((photo, pi) => (
-            <Photo key={photo.id} photo={photo} onClick={() => onOpen(photo)} style={{ aspectRatio: cellAspect['row-3'][pi] }} />
-          ))}
-        </div>
-      </motion.div>
-    )
-  }
+    const targets = Array.from(itemRefs.current.values())
+    targets.forEach((target) => observer.observe(target))
+
+    return () => observer.disconnect()
+  }, [normalized.length])
 
   return (
-    <motion.div
-      key={`row-${rowIdx}`}
-      className="grid"
-      style={{ gridTemplateColumns: rowCols[row.template], gap: '6px' }}
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.9, ease: [0.2, 0.6, 0.2, 1] }}
+    <section
+      id="photo-grid"
+      className="bg-[var(--bg-primary)] px-1 py-8 sm:px-2 md:px-4"
     >
-      {row.photos.map((photo, photoIdx) => (
-        <Photo
-          key={photo.id}
-          photo={photo}
-          onClick={() => onOpen(photo)}
-          style={{ aspectRatio: cellAspect[row.template][photoIdx] }}
-        />
-      ))}
-    </motion.div>
-  )
-}
-
-export default function PhotoGrid({ photos }: PhotoGridProps) {
-  const [lightboxPhoto, setLightboxPhoto] = useState<PhotoType | null>(null)
-  const rows = buildRows(photos)
-
-  return (
-    <section className="px-3 sm:px-6 py-4 sm:py-8">
-      <div className="flex flex-col gap-1.5 md:gap-2">
-        {rows.map((row, rowIdx) => (
-          <MobileAwareRow
-            key={rowIdx}
-            row={row}
-            rowIdx={rowIdx}
-            onOpen={(p) => setLightboxPhoto(p)}
-          />
+      <div className="masonry columns-2 gap-1 [column-gap:4px] md:columns-3 xl:columns-4">
+        {normalized.map((photo, index) => (
+          <div
+            key={photo.id}
+            ref={(element) => {
+              if (element) itemRefs.current.set(photo.id, element)
+              else itemRefs.current.delete(photo.id)
+            }}
+            data-photo-id={photo.id}
+            className={[
+              'masonry-item reveal-item mb-1 break-inside-avoid',
+              index % 7 === 6
+                ? 'is-featured border-l-2 border-[#C9A96E]'
+                : '',
+              visibleIds.has(photo.id)
+                ? 'translate-y-0 opacity-100'
+                : 'translate-y-[10px] opacity-0',
+              `reveal-slot-${index % 12}`,
+            ].join(' ')}
+          >
+            <PhotoCard
+              id={photo.id}
+              src={photo.src}
+              alt={photo.alt}
+              isFavorited={favoriteSet.has(photo.id)}
+              onToggleFavorite={(id) => onToggleFavorite?.(id)}
+              onOpen={() => onPhotoOpen?.(index)}
+            />
+          </div>
         ))}
       </div>
 
-      <Lightbox
-        photo={lightboxPhoto}
-        photos={photos}
-        onClose={() => setLightboxPhoto(null)}
-        onNavigate={(p) => setLightboxPhoto(p)}
-      />
+      <div ref={endSentinelRef} className="h-px w-full" aria-hidden />
+
+      <style>{`
+        .reveal-item {
+          transition-property: opacity, transform;
+          transition-duration: 700ms;
+          transition-timing-function: cubic-bezier(0.22, 0.84, 0.24, 1);
+        }
+        .reveal-slot-0  { transition-delay: 0ms; }
+        .reveal-slot-1  { transition-delay: 70ms; }
+        .reveal-slot-2  { transition-delay: 140ms; }
+        .reveal-slot-3  { transition-delay: 210ms; }
+        .reveal-slot-4  { transition-delay: 280ms; }
+        .reveal-slot-5  { transition-delay: 350ms; }
+        .reveal-slot-6  { transition-delay: 420ms; }
+        .reveal-slot-7  { transition-delay: 490ms; }
+        .reveal-slot-8  { transition-delay: 560ms; }
+        .reveal-slot-9  { transition-delay: 630ms; }
+        .reveal-slot-10 { transition-delay: 700ms; }
+        .reveal-slot-11 { transition-delay: 770ms; }
+        .masonry-item.is-featured {
+          border-left-width: 2px;
+          border-left-color: rgba(201, 169, 110, 0.95);
+        }
+      `}</style>
     </section>
   )
 }

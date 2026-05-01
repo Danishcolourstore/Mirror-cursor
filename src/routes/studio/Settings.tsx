@@ -84,7 +84,14 @@ function Toggle({ label, hint, value, onChange }: {
 export default function Settings() {
   const studioProfile = useStudioStore()
   const updateProfile = useStudioStore((s) => s.updateProfile)
-  const { gallery, notifications, updateGallery, updateNotifications } = useSettingsStore()
+  const {
+    gallery,
+    notifications,
+    studioDefaultTheme,
+    updateGallery,
+    updateNotifications,
+    updateStudioDefaultTheme,
+  } = useSettingsStore()
   const pushToast = useToastStore((s) => s.push)
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile')
 
@@ -253,25 +260,75 @@ export default function Settings() {
         )}
 
         {activeTab === 'gallery' && (
-          <div className="border border-muted divide-y divide-muted">
-            <Toggle
-              label="Watermark photos"
-              hint="Adds a subtle studio watermark to all gallery images."
-              value={gallery.watermark}
-              onChange={(v) => { updateGallery({ watermark: v }); pushToast(v ? 'Watermark on' : 'Watermark off', { tone: 'default' }) }}
-            />
-            <Toggle
-              label="Allow photo downloads"
-              hint="Clients can download full-resolution files."
-              value={gallery.downloadEnabled}
-              onChange={(v) => { updateGallery({ downloadEnabled: v }); pushToast(v ? 'Downloads enabled' : 'Downloads disabled', { tone: 'default' }) }}
-            />
-            <Toggle
-              label="Password protect by default"
-              hint="All new galleries require a password to view."
-              value={gallery.passwordProtect}
-              onChange={(v) => { updateGallery({ passwordProtect: v }); pushToast(v ? 'New galleries will require a password' : 'New galleries will be public', { tone: 'default' }) }}
-            />
+          <div className="space-y-5">
+            <div className="border border-muted divide-y divide-muted">
+              <Toggle
+                label="Watermark photos"
+                hint="Adds a subtle studio watermark to all gallery images."
+                value={gallery.watermark}
+                onChange={(v) => { updateGallery({ watermark: v }); pushToast(v ? 'Watermark on' : 'Watermark off', { tone: 'default' }) }}
+              />
+              <Toggle
+                label="Allow photo downloads"
+                hint="Clients can download full-resolution files."
+                value={gallery.downloadEnabled}
+                onChange={(v) => { updateGallery({ downloadEnabled: v }); pushToast(v ? 'Downloads enabled' : 'Downloads disabled', { tone: 'default' }) }}
+              />
+              <Toggle
+                label="Password protect by default"
+                hint="All new galleries require a password to view."
+                value={gallery.passwordProtect}
+                onChange={(v) => { updateGallery({ passwordProtect: v }); pushToast(v ? 'New galleries will require a password' : 'New galleries will be public', { tone: 'default' }) }}
+              />
+            </div>
+
+            <div className="border border-muted bg-canvas-deep p-5">
+              <p className="font-sans text-[10px] uppercase text-whisper mb-4" style={{ letterSpacing: '0.18em' }}>
+                Studio Default Theme
+              </p>
+              <div className="space-y-4">
+                <div>
+                  <label className="font-sans text-[11px] uppercase text-whisper" style={{ letterSpacing: '0.08em' }}>
+                    Default cover overlay ({studioDefaultTheme.coverOverlayTintPct}%)
+                  </label>
+                  <input
+                    type="range"
+                    min={0}
+                    max={50}
+                    value={studioDefaultTheme.coverOverlayTintPct}
+                    onChange={(e) => updateStudioDefaultTheme({ coverOverlayTintPct: Number(e.target.value) })}
+                    className="mt-2 w-full"
+                  />
+                </div>
+                <div>
+                  <label className="font-sans text-[11px] uppercase text-whisper" style={{ letterSpacing: '0.08em' }}>
+                    Default photo spacing
+                  </label>
+                  <div className="mt-2 flex gap-2">
+                    {(['tight', 'normal', 'loose'] as const).map((mode) => (
+                      <button
+                        key={mode}
+                        type="button"
+                        onClick={() => updateStudioDefaultTheme({ photoGridSpacing: mode })}
+                        className={cn(
+                          'border px-3 py-1.5 font-sans text-[11px] uppercase',
+                          studioDefaultTheme.photoGridSpacing === mode ? 'border-ink bg-canvas text-ink' : 'border-muted text-whisper'
+                        )}
+                        style={{ letterSpacing: '0.08em' }}
+                      >
+                        {mode}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <Toggle
+                  label="Default music toggle ON"
+                  hint="Each new event starts with music enabled in gallery controls."
+                  value={studioDefaultTheme.musicDefaultOn}
+                  onChange={(v) => updateStudioDefaultTheme({ musicDefaultOn: v })}
+                />
+              </div>
+            </div>
           </div>
         )}
 

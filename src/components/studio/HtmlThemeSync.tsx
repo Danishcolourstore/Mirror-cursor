@@ -28,5 +28,21 @@ export default function HtmlThemeSync() {
     return unsub
   }, [])
 
+  useEffect(() => {
+    const root = document.documentElement
+    if (!root.dataset.grainReady) root.dataset.grainReady = 'false'
+    const readyTimer = window.setTimeout(() => {
+      root.dataset.grainReady = 'true'
+    }, 80)
+    // Safety: force-enable grain after 2s even if initialization stalls.
+    const safetyTimer = window.setTimeout(() => {
+      root.dataset.grainReady = 'true'
+    }, 2000)
+    return () => {
+      window.clearTimeout(readyTimer)
+      window.clearTimeout(safetyTimer)
+    }
+  }, [])
+
   return null
 }

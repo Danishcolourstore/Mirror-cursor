@@ -24,6 +24,11 @@ export function formatMonthYear(dateStr: string): string {
   })
 }
 
+/** Cover line: "Samode Palace · February 2025" (location · month year). */
+export function formatVenueMonthYear(location: string, dateStr: string): string {
+  return `${location} · ${formatMonthYear(dateStr)}`
+}
+
 /**
  * Indian-currency shorthand for studio UI.
  * - ≥ 1 lakh → `₹…L` (lakhs; do not append another "L" in JSX)

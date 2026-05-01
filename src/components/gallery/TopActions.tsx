@@ -2,7 +2,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Heart, Share2, ChevronUp, Volume2, VolumeX } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { useGalleryStore } from '../../stores/galleryStore'
-import { useToastStore } from '../../stores/toastStore'
 import FavoritesDrawer from './FavoritesDrawer'
 import Lightbox from './Lightbox'
 import type { Event } from '../../types/event'
@@ -14,7 +13,6 @@ type TopActionsProps = {
 
 export default function TopActions({ event }: TopActionsProps) {
   const { favoritedIds, isMusicPlaying, toggleMusic } = useGalleryStore()
-  const pushToast = useToastStore((s) => s.push)
   const [visible, setVisible] = useState(false)
   const [favDrawerOpen, setFavDrawerOpen] = useState(false)
   const [lightboxPhoto, setLightboxPhoto] = useState<Photo | null>(null)
@@ -37,7 +35,6 @@ export default function TopActions({ event }: TopActionsProps) {
         })
       } else {
         await navigator.clipboard.writeText(window.location.href)
-        pushToast('Gallery link copied', { detail: window.location.href, tone: 'success' })
       }
     } catch {
       // user cancelled — no toast
@@ -46,10 +43,6 @@ export default function TopActions({ event }: TopActionsProps) {
 
   const handleMusic = () => {
     toggleMusic()
-    pushToast(isMusicPlaying ? 'Music muted' : 'Music on', {
-      detail: isMusicPlaying ? undefined : 'A soft score plays in the background.',
-      tone: 'bronze',
-    })
   }
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })

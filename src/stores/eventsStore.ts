@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { Event, Chapter, Milestone } from '../types/event'
+import type { Photo } from '../types/photo'
 import { mockEvents } from '../data/mockEvents'
 
 type EventsStore = {
@@ -10,6 +11,12 @@ type EventsStore = {
   updateEventProgress: (id: string, progress: number) => void
   updateEvent: (id: string, patch: Partial<Event>) => void
   updateChapter: (eventId: string, chapterId: string, patch: Partial<Chapter>) => void
+  updatePhotoInChapter: (
+    eventId: string,
+    chapterId: string,
+    photoId: string,
+    patch: Partial<Photo>
+  ) => void
   updateMilestones: (eventId: string, milestones: Milestone[]) => void
   addEvent: (event: Event) => void
   resetToMocks: () => void
@@ -50,6 +57,25 @@ export const useEventsStore = create<EventsStore>()(
                 }
               : e
           ),
+        })),
+
+      updatePhotoInChapter: (eventId, chapterId, photoId, photoPatch) =>
+        set((state) => ({
+          events: state.events.map((e) => {
+            if (e.id !== eventId) return e
+            return {
+              ...e,
+              chapters: e.chapters.map((c) => {
+                if (c.id !== chapterId) return c
+                return {
+                  ...c,
+                  photos: c.photos.map((p) =>
+                    p.id === photoId ? { ...p, ...photoPatch } : p
+                  ),
+                }
+              }),
+            }
+          }),
         })),
 
       updateMilestones: (eventId, milestones) =>

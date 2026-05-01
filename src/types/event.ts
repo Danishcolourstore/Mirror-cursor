@@ -1,5 +1,9 @@
 import type { Photo } from './photo'
 
+export type GalleryCoverSize = 'small' | 'medium' | 'fullscreen'
+export type PhotoGridSpacing = 'tight' | 'normal' | 'loose'
+export type PhotoGridCellScale = 'small' | 'medium' | 'large'
+
 export type EventStatus = 'booked' | 'shooting' | 'editing' | 'delivered'
 export type ChapterStatus = 'draft' | 'scheduled' | 'live' | 'locked'
 
@@ -54,4 +58,13 @@ export type Event = {
     paid: number
   }
   milestones?: Milestone[]
+  /** Public gallery: which photo URL to use as cover (defaults to coverImage / first hero). */
+  galleryCoverPhotoId?: string | null
+  /** Veil darkness 0–50 (%). */
+  galleryCoverTintPct?: number
+  galleryCoverSize?: GalleryCoverSize
+  photoGridCellScale?: PhotoGridCellScale
+  photoGridSpacing?: PhotoGridSpacing
+  /** Initial music preference for this gallery (from studio defaults at event creation). */
+  galleryMusicDefaultOn?: boolean
 }

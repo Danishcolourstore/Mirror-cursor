@@ -1,13 +1,10 @@
-export type PhotoAspect = 'portrait' | 'landscape' | 'square' | 'wide' | 'tall'
-export type PhotoRole = 'establish' | 'build' | 'hero' | 'candid' | 'detail' | 'breath'
-
-export type Photo = {
+export interface Photo {
   id: string
   url: string
-  thumbUrl?: string
-  aspect: PhotoAspect
-  role: PhotoRole
+  thumbUrl: string
   caption?: string
+  role?: string
+  aspect?: string
   favorited: boolean
   views: number
 }

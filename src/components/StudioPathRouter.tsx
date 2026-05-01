@@ -1,17 +1,19 @@
+import { lazy, Suspense } from 'react'
 import { useLocation } from 'react-router-dom'
 import Sidebar from './studio/Sidebar'
 import PageTransition from './ui/PageTransition'
 import { AnimatePresence } from 'framer-motion'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { PageLoadingSkeleton } from './ui/LoadingStates'
 
-import Overview from '../routes/studio/Overview'
-import Events from '../routes/studio/Events'
-import EventDetail from '../routes/studio/EventDetail'
-import Galleries from '../routes/studio/Galleries'
-import Clients from '../routes/studio/Clients'
-import Albums from '../routes/studio/Albums'
-import Insights from '../routes/studio/Insights'
-import Settings from '../routes/studio/Settings'
+const Overview = lazy(() => import('../routes/studio/Overview'))
+const Events = lazy(() => import('../routes/studio/Events'))
+const EventDetail = lazy(() => import('../routes/studio/EventDetail'))
+const Galleries = lazy(() => import('../routes/studio/Galleries'))
+const Clients = lazy(() => import('../routes/studio/Clients'))
+const Albums = lazy(() => import('../routes/studio/Albums'))
+const Insights = lazy(() => import('../routes/studio/Insights'))
+const Settings = lazy(() => import('../routes/studio/Settings'))
 
 import StudioPublicProfile from '../routes/public/StudioPublicProfile'
 import CommandPalette from './studio/CommandPalette'
@@ -49,19 +51,21 @@ function StudioDashboardLayout() {
       <Sidebar />
       <NotificationBell />
       <main className="flex-1 min-w-0 overflow-x-hidden">
-        <AnimatePresence mode="wait" initial={false}>
-          <Routes location={location} key={location.pathname}>
-            <Route index element={<Navigate to="overview" replace />} />
-            <Route path="overview" element={<PageTransition><Overview /></PageTransition>} />
-            <Route path="events" element={<PageTransition><Events /></PageTransition>} />
-            <Route path="events/:id" element={<PageTransition><EventDetail /></PageTransition>} />
-            <Route path="galleries" element={<PageTransition><Galleries /></PageTransition>} />
-            <Route path="clients" element={<PageTransition><Clients /></PageTransition>} />
-            <Route path="albums" element={<PageTransition><Albums /></PageTransition>} />
-            <Route path="insights" element={<PageTransition><Insights /></PageTransition>} />
-            <Route path="settings" element={<PageTransition><Settings /></PageTransition>} />
-          </Routes>
-        </AnimatePresence>
+        <Suspense fallback={<PageLoadingSkeleton />}>
+          <AnimatePresence mode="wait" initial={false}>
+            <Routes location={location} key={location.pathname}>
+              <Route index element={<Navigate to="overview" replace />} />
+              <Route path="overview" element={<PageTransition><Overview /></PageTransition>} />
+              <Route path="events" element={<PageTransition><Events /></PageTransition>} />
+              <Route path="events/:id" element={<PageTransition><EventDetail /></PageTransition>} />
+              <Route path="galleries" element={<PageTransition><Galleries /></PageTransition>} />
+              <Route path="clients" element={<PageTransition><Clients /></PageTransition>} />
+              <Route path="albums" element={<PageTransition><Albums /></PageTransition>} />
+              <Route path="insights" element={<PageTransition><Insights /></PageTransition>} />
+              <Route path="settings" element={<PageTransition><Settings /></PageTransition>} />
+            </Routes>
+          </AnimatePresence>
+        </Suspense>
       </main>
 
       <CommandPalette open={commandPaletteOpen} onClose={closeCommandPalette} />

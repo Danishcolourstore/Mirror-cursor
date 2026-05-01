@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { ArrowLeft, ExternalLink, Image as ImageIcon, BookOpen, FileText, Clock, BarChart3, Check, Share2 } from 'lucide-react'
+import { ArrowLeft, ExternalLink, Image as ImageIcon, BookOpen, FileText, Clock, BarChart3, Check, Share2, Star, Copy } from 'lucide-react'
 import { useEventsStore } from '../../stores/eventsStore'
 import { useToastStore } from '../../stores/toastStore'
 import { cn } from '../../lib/cn'
 import { formatDateShort, formatCurrency, toRoman } from '../../lib/format'
 import ShareGalleryModal from '../../components/studio/ShareGalleryModal'
 import { BreathingDots } from '../../components/ui/LoadingStates'
+import LightboxViewer from '../../components/gallery/LightboxViewer'
 import type { Event, Chapter } from '../../types/event'
+import type { Photo as PhotoType } from '../../types/photo'
 
 type Tab = 'overview' | 'photos' | 'chapters' | 'note' | 'schedule' | 'analytics'
 
@@ -31,7 +33,7 @@ const chapterStatusPill: Record<Chapter['status'], string> = {
 export default function EventDetail() {
   const { id } = useParams()
   const navigate = useNavigate()
-  const { getEventById } = useEventsStore()
+  const { getEventById, updateEvent, updatePhotoInChapter } = useEventsStore()
   const [activeTab, setActiveTab] = useState<Tab>('overview')
   const [shareOpen, setShareOpen] = useState(false)
 
@@ -149,9 +151,9 @@ export default function EventDetail() {
       {/* Tab content */}
       <div className="flex-1">
         {activeTab === 'overview' && (
-          <OverviewTab event={event} liveChapters={liveChapters} totalPhotos={totalPhotos} paid={paid} />
+          <OverviewTab event={event} liveChapters={liveChapters} totalPhotos={totalPhotos} paid={paid} updateEvent={updateEvent} />
         )}
-        {activeTab === 'photos' && <PhotosTab event={event} />}
+        {activeTab === 'photos' && <PhotosTab event={event} updateEvent={updateEvent} updatePhotoInChapter={updatePhotoInChapter} />}
         {activeTab === 'chapters' && <ChaptersTab event={event} />}
         {activeTab === 'note' && <NoteTab event={event} />}
         {activeTab === 'schedule' && <ScheduleTab event={event} />}
@@ -162,11 +164,12 @@ export default function EventDetail() {
 }
 
 // ─── Tab: Overview ────────────────────────────────────────────────────────────
-function OverviewTab({ event, liveChapters, totalPhotos, paid }: {
+function OverviewTab({ event, liveChapters, totalPhotos, paid, updateEvent }: {
   event: Event
   liveChapters: number
   totalPhotos: number
   paid: boolean
+  updateEvent: (id: string, patch: Partial<Event>) => void
 }) {
   if (!event) return null
   return (
@@ -192,6 +195,63 @@ function OverviewTab({ event, liveChapters, totalPhotos, paid }: {
               <span className="serif font-light text-ink text-2xl" style={{ letterSpacing: '-0.02em' }}>
                 {event.progress}%
               </span>
+            </div>
+          </div>
+
+          <div className="border border-muted bg-canvas-deep p-6">
+            <h3 className="font-sans text-[11px] uppercase text-whisper mb-4" style={{ letterSpacing: '0.18em' }}>
+              Cover customization
+            </h3>
+            <div className="space-y-4">
+              <div>
+                <p className="font-sans text-[11px] uppercase text-whisper mb-2" style={{ letterSpacing: '0.08em' }}>
+                  Cover photo
+                </p>
+                <div className="grid grid-cols-4 gap-2">
+                  {event.chapters.flatMap((ch) => ch.photos).slice(0, 8).map((photo) => (
+                    <button
+                      key={photo.id}
+                      type="button"
+                      onClick={() => updateEvent(event.id, { galleryCoverPhotoId: photo.id })}
+                      className={cn(
+                        'aspect-[4/3] overflow-hidden border',
+                        event.galleryCoverPhotoId === photo.id ? 'border-ink' : 'border-muted'
+                      )}
+                    >
+                      <img src={photo.url} alt="" className="h-full w-full object-cover" loading="lazy" />
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="font-sans text-[11px] uppercase text-whisper mb-2" style={{ letterSpacing: '0.08em' }}>
+                  Overlay tint ({event.galleryCoverTintPct ?? 24}%)
+                </p>
+                <input
+                  type="range"
+                  min={0}
+                  max={50}
+                  value={event.galleryCoverTintPct ?? 24}
+                  onChange={(e) => updateEvent(event.id, { galleryCoverTintPct: Number(e.target.value) })}
+                  className="w-full"
+                />
+              </div>
+              <div className="flex gap-2">
+                {(['small', 'medium', 'fullscreen'] as const).map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    onClick={() => updateEvent(event.id, { galleryCoverSize: size })}
+                    className={cn(
+                      'border px-3 py-1.5 font-sans text-[11px] uppercase',
+                      (event.galleryCoverSize ?? 'fullscreen') === size ? 'border-ink text-ink' : 'border-muted text-whisper'
+                    )}
+                    style={{ letterSpacing: '0.08em' }}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -315,7 +375,15 @@ function OverviewTab({ event, liveChapters, totalPhotos, paid }: {
 }
 
 // ─── Tab: Photos ──────────────────────────────────────────────────────────────
-function PhotosTab({ event }: { event: Event }) {
+function PhotosTab({
+  event,
+  updateEvent,
+  updatePhotoInChapter,
+}: {
+  event: Event
+  updateEvent: (id: string, patch: Partial<Event>) => void
+  updatePhotoInChapter: (eventId: string, chapterId: string, photoId: string, patch: Partial<PhotoType>) => void
+}) {
   const updateChapter = useEventsStore((s) => s.updateChapter)
   const pushToast = useToastStore((s) => s.push)
   const [activeChapter, setActiveChapter] = useState<string>('all')
@@ -323,7 +391,16 @@ function PhotosTab({ event }: { event: Event }) {
   const [moveMenuOpen, setMoveMenuOpen] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
+  const [lightboxPhoto, setLightboxPhoto] = useState<PhotoType | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const sizeScale = event.photoGridCellScale ?? 'medium'
+  const spacingMode = event.photoGridSpacing ?? 'normal'
+
+  const toFilename = (url: string) => {
+    const segment = url.split('/').pop() ?? 'photo.jpg'
+    const clean = segment.split('?')[0]
+    return clean.includes('.') ? clean : `${clean}.jpg`
+  }
 
   const chaptersWithPhotos = event.chapters.filter((c) => c.photos.length > 0)
   const displayed =
@@ -334,6 +411,10 @@ function PhotosTab({ event }: { event: Event }) {
           .flatMap((c) => c.photos.map((p) => ({ ...p, chapterId: c.id, chapterTitle: c.title })))
 
   const totalCount = event.chapters.reduce((a, c) => a + c.photos.length, 0)
+  const favoritedFilenames = event.chapters
+    .flatMap((chapter) => chapter.photos)
+    .filter((photo) => photo.favorited)
+    .map((photo) => toFilename(photo.url))
 
   const toggleSelect = (id: string) => {
     setSelectedIds((prev) => {
@@ -431,6 +512,24 @@ function PhotosTab({ event }: { event: Event }) {
           All <em>Photos</em>
         </h2>
         <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={async () => {
+              if (favoritedFilenames.length === 0) {
+                pushToast('No favorited filenames yet', { tone: 'error' })
+                return
+              }
+              await navigator.clipboard.writeText(favoritedFilenames.join(', '))
+              pushToast('Filenames copied for Lightroom', { tone: 'success' })
+            }}
+            className="border border-muted px-2.5 py-1.5 font-sans text-[11px] uppercase text-ink-soft hover:text-ink hover:border-ink-soft transition-colors"
+            style={{ letterSpacing: '0.08em' }}
+          >
+            <span className="inline-flex items-center gap-1.5">
+              <Copy size={11} strokeWidth={1.5} />
+              Copy Filenames
+            </span>
+          </button>
           {selectedIds.size > 0 && (
             <div className="flex items-center gap-2 relative">
               <span className="font-sans text-[11px] text-whisper">{selectedIds.size} selected</span>
@@ -472,6 +571,42 @@ function PhotosTab({ event }: { event: Event }) {
           <p className="font-sans text-[11px] text-whisper uppercase" style={{ letterSpacing: '0.18em' }}>
             {totalCount} images
           </p>
+        </div>
+      </div>
+      <div className="mb-6 border border-muted bg-canvas-deep px-4 py-3">
+        <div className="flex flex-wrap gap-6">
+          <div>
+            <p className="font-sans text-[10px] uppercase text-whisper" style={{ letterSpacing: '0.08em' }}>
+              Grid photo size
+            </p>
+            <input
+              type="range"
+              min={0}
+              max={2}
+              value={sizeScale === 'small' ? 0 : sizeScale === 'medium' ? 1 : 2}
+              onChange={(e) => {
+                const next = ['small', 'medium', 'large'][Number(e.target.value)] as Event['photoGridCellScale']
+                updateEvent(event.id, { photoGridCellScale: next })
+              }}
+              className="mt-2 w-44"
+            />
+          </div>
+          <div>
+            <p className="font-sans text-[10px] uppercase text-whisper" style={{ letterSpacing: '0.08em' }}>
+              Grid spacing
+            </p>
+            <input
+              type="range"
+              min={0}
+              max={2}
+              value={spacingMode === 'tight' ? 0 : spacingMode === 'normal' ? 1 : 2}
+              onChange={(e) => {
+                const next = ['tight', 'normal', 'loose'][Number(e.target.value)] as Event['photoGridSpacing']
+                updateEvent(event.id, { photoGridSpacing: next })
+              }}
+              className="mt-2 w-44"
+            />
+          </div>
         </div>
       </div>
 
@@ -555,7 +690,12 @@ function PhotosTab({ event }: { event: Event }) {
           </p>
         </div>
       ) : (
-        <div className="columns-2 md:columns-3 xl:columns-4 gap-2 space-y-2">
+        <div
+          className={cn(
+            sizeScale === 'small' ? 'columns-2 md:columns-3 xl:columns-4' : sizeScale === 'large' ? 'columns-1 md:columns-2 xl:columns-3' : 'columns-2 md:columns-3 xl:columns-4',
+            spacingMode === 'tight' ? 'gap-1 space-y-1' : spacingMode === 'loose' ? 'gap-3 space-y-3' : 'gap-2 space-y-2'
+          )}
+        >
           {displayed.map((photo) => {
             const isSelected = selectedIds.has(photo.id)
             return (
@@ -565,7 +705,7 @@ function PhotosTab({ event }: { event: Event }) {
                   'break-inside-avoid overflow-hidden group cursor-pointer relative',
                   isSelected && 'ring-2 ring-bronze ring-offset-1'
                 )}
-                onClick={() => toggleSelect(photo.id)}
+                onClick={() => setLightboxPhoto(photo)}
               >
                 <img
                   src={photo.url}
@@ -573,12 +713,34 @@ function PhotosTab({ event }: { event: Event }) {
                   loading="lazy"
                   className="w-full object-cover transition-transform duration-[1400ms] ease-[cubic-bezier(0.2,0.6,0.2,1)] group-hover:scale-[1.03]"
                 />
-                <div className={cn(
-                  'absolute top-2 left-2 w-5 h-5 border flex items-center justify-center transition-all duration-300',
-                  isSelected ? 'bg-bronze border-bronze' : 'bg-night/30 border-canvas/40 opacity-0 group-hover:opacity-100'
-                )}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    toggleSelect(photo.id)
+                  }}
+                  className={cn(
+                    'absolute top-2 left-2 w-5 h-5 border flex items-center justify-center transition-all duration-300',
+                    isSelected ? 'bg-bronze border-bronze' : 'bg-night/30 border-canvas/40 opacity-0 group-hover:opacity-100'
+                  )}
+                  aria-label={isSelected ? 'Deselect photo' : 'Select photo'}
+                >
                   {isSelected && <Check size={10} strokeWidth={2.5} className="text-inverse-fg" />}
-                </div>
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    const nextRole = photo.role === 'hero' ? 'candid' : 'hero'
+                    updatePhotoInChapter(event.id, photo.chapterId, photo.id, { role: nextRole })
+                  }}
+                  className={cn(
+                    'absolute top-2 right-2 h-7 w-7 border border-canvas/35 bg-night/40 text-white/90 backdrop-blur-sm',
+                    photo.role === 'hero' && 'bg-night/70 text-[#8B6F47]'
+                  )}
+                  aria-label="Mark as hero"
+                >
+                  <Star size={12} strokeWidth={1.6} className={photo.role === 'hero' ? 'fill-[#8B6F47]' : ''} />
+                </button>
                 {photo.role === 'hero' && (
                   <span className="absolute bottom-2 right-2 font-sans text-[9px] uppercase text-inverse-fg/80 bg-night/50 px-1.5 py-0.5" style={{ letterSpacing: '0.1em' }}>
                     Hero
@@ -589,6 +751,13 @@ function PhotosTab({ event }: { event: Event }) {
           })}
         </div>
       )}
+
+      <LightboxViewer
+        photo={lightboxPhoto}
+        photos={displayed}
+        onClose={() => setLightboxPhoto(null)}
+        onNavigate={(p) => setLightboxPhoto(p)}
+      />
     </div>
   )
 }

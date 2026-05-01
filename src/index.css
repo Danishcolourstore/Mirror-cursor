@@ -121,18 +121,18 @@ html[data-theme='white'] {
   body {
     @apply bg-canvas text-ink font-sans;
     font-size: 15px;
-    line-height: 1.55;
+    line-height: 1.7;
     position: relative;
     min-height: 100vh;
   }
 
-  [data-theme='warm'] body::after {
+  [data-theme='warm'][data-grain-ready='true'] body::after {
     content: '';
     position: fixed;
     inset: 0;
     z-index: 9999;
     pointer-events: none;
-    opacity: var(--grain-opacity);
+    opacity: 0.4;
     mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
     background-repeat: repeat;
@@ -142,6 +142,12 @@ html[data-theme='white'] {
   [data-theme='white'] body::after,
   [data-theme='black'] body::after {
     content: none;
+  }
+
+  @media (max-width: 1023px) {
+    [data-theme='warm'][data-grain-ready='true'] body::after {
+      content: none;
+    }
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -209,7 +215,7 @@ html[data-theme='white'] {
 
   .caption {
     @apply font-serif italic text-sm text-whisper;
-    line-height: 1.5;
+    line-height: 1.7;
   }
 
   .pill {
@@ -306,6 +312,45 @@ html[data-theme='white'] {
   }
 }
 
+@keyframes kenBurnsCover {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.03);
+  }
+}
+
+@keyframes chevronPulse {
+  0% {
+    transform: translateY(0);
+    opacity: 0.42;
+  }
+  50% {
+    transform: translateY(3px);
+    opacity: 0.85;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.42;
+  }
+}
+
+@keyframes favoritesBarIn {
+  0% { transform: translateY(24px); opacity: 0.45; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
 .loading-dot {
   animation: breatheDot 1.6s ease-in-out infinite;
+}
+
+.heart-pop {
+  animation: heartPop 150ms ease-in-out;
+}
+
+@keyframes heartPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4); }
+  100% { transform: scale(1); }
 }
